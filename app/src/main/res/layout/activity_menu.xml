@@ -112,13 +112,13 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCalculator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:contentDescription="Kalkulator Kalori"
-        app:backgroundTint="@color/healthy_green"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_manage"
+        android:layout_margin="16dp"
+        android:layout_gravity="end|bottom"
+        android:background="@drawable/custom_rounded_button"
+        app:srcCompat="@drawable/calculator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
