@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <!-- HEADER HIJAU (static) -->
     <LinearLayout
         android:id="@+id/headerContainer"
         android:layout_width="0dp"
@@ -45,7 +44,6 @@
             android:drawablePadding="10dp" />
     </LinearLayout>
 
-    <!-- TAG BAR (di luar header, tetap static) -->
     <LinearLayout
         android:id="@+id/tagBar"
         android:layout_width="0dp"
@@ -96,7 +94,6 @@
             android:background="@drawable/bg_tag_unselected_gray" />
     </LinearLayout>
 
-    <!-- LIST (scroll hanya di sini) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -110,15 +107,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/fabCalculator"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:contentDescription="Kalkulator Kalori"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_margin="16dp"
-        android:layout_gravity="end|bottom"
         android:background="@drawable/custom_rounded_button"
         app:srcCompat="@drawable/calculator"
+        android:padding="12dp"
+        android:scaleType="fitCenter"
+        android:elevation="6dp"
+        android:stateListAnimator="@null"
+        android:contentDescription="Kalkulator Kalori"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -26,6 +26,10 @@ public class CalorieCalculatorActivity extends AppCompatActivity {
 
     private EditText etAge, etHeight, etWeight;
     private Spinner spinnerGender, spinnerActivity, spinnerGoal;
+
+    // MODIFIKASI: Menambahkan variabel untuk TextView BMI
+    private TextView tvBmiResult;
+
     private TextView tvCalorieResult, tvResultDesc;
     private TextView tvMacroProtein, tvMacroCarb, tvMacroFat;
     private Button btnCalculate;
@@ -53,6 +57,10 @@ public class CalorieCalculatorActivity extends AppCompatActivity {
         spinnerGender = findViewById(R.id.spinnerGender);
         spinnerActivity = findViewById(R.id.spinnerActivity);
         spinnerGoal = findViewById(R.id.spinnerGoal);
+
+        // MODIFIKASI: Menghubungkan variabel dengan ID di XML
+        tvBmiResult = findViewById(R.id.tvBmiResult);
+
         tvCalorieResult = findViewById(R.id.tvCalorieResult);
         tvResultDesc = findViewById(R.id.tvResultDesc);
         tvMacroProtein = findViewById(R.id.tvMacroProtein);
@@ -95,6 +103,30 @@ public class CalorieCalculatorActivity extends AppCompatActivity {
         int age = Integer.parseInt(sAge);
         double height = Double.parseDouble(sHeight);
         double weight = Double.parseDouble(sWeight);
+
+        // === MODIFIKASI MULAI: Logika Hitung BMI ===
+        // Rumus BMI: Berat (kg) / (Tinggi (m) * Tinggi (m))
+        double heightInMeter = height / 100.0;
+        double bmi = weight / (heightInMeter * heightInMeter);
+
+        // Tentukan Kategori BMI
+        String bmiCategory;
+        if (bmi < 18.5) {
+            bmiCategory = "Kurus";
+        } else if (bmi < 24.9) {
+            bmiCategory = "Normal";
+        } else if (bmi < 29.9) {
+            bmiCategory = "Gemuk";
+        } else {
+            bmiCategory = "Obesitas";
+        }
+
+        // Tampilkan hasil BMI ke TextView (Pastikan ID tvBmiResult sudah ada di XML)
+        if (tvBmiResult != null) {
+            tvBmiResult.setText(String.format(Locale.US, "BMI: %.1f (%s)", bmi, bmiCategory));
+        }
+        // === MODIFIKASI SELESAI ===
+
 
         // Cek Gender dari Spinner (0 = Laki-laki, 1 = Perempuan sesuai urutan di arrays.xml)
         boolean isMale = (spinnerGender.getSelectedItemPosition() == 0);

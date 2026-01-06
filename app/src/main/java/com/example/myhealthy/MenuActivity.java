@@ -1,7 +1,7 @@
 package com.example.myhealthy;
 
 import android.content.Intent;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,12 +18,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-
 public class MenuActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private FoodAdapter adapter;
     private EditText searchBar;
+
+    // [BARU] Variabel untuk Switch
 
     private TextView tagAll, tagHewani, tagNabati;
 
@@ -36,15 +37,17 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        // Tombol cepat untuk membuka Kalkulator Kalori (fitur baru)
-        FloatingActionButton fabCalculator = findViewById(R.id.fabCalculator);
+
+        // Menggunakan AppCompatImageButton agar cocok dengan XML yang baru (Rounded Button)
+        AppCompatImageButton fabCalculator = findViewById(R.id.fabCalculator);
+
         if (fabCalculator != null) {
             fabCalculator.setOnClickListener(v -> {
                 Intent i = new Intent(MenuActivity.this, CalorieCalculatorActivity.class);
                 startActivity(i);
             });
         }
-
+        // --------------------------------
 
         recyclerView = findViewById(R.id.recyclerView);
         searchBar = findViewById(R.id.searchBar);
