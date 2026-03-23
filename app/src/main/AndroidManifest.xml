@@ -40,6 +40,12 @@
             android:exported="true">
         </activity>
 
+        <!-- RegisterActivity definition -->
+        <activity android:name=".RegisterActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+            android:exported="false">
+        </activity>
+
         <!-- MenuActivity definition -->
         <activity android:name=".MenuActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"

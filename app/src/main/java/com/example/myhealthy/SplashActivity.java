@@ -60,7 +60,7 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         greetingText = findViewById(R.id.greeting_text);
-        ImageView flagIcon = findViewById(R.id.flag_icon);
+
 
         // Tampilkan teks sementara selagi menunggu GPS
         greetingText.setText("Mendeteksi lokasi...");
@@ -84,7 +84,17 @@ public class SplashActivity extends Activity {
             navigated = true;
             handler.removeCallbacksAndMessages(null);
             stopLocationUpdates();
-            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+
+            // Cek apakah user sudah login via Firebase
+            com.google.firebase.auth.FirebaseAuth auth =
+                    com.google.firebase.auth.FirebaseAuth.getInstance();
+            if (auth.getCurrentUser() != null) {
+                // Sudah login → langsung ke Menu
+                startActivity(new Intent(SplashActivity.this, MenuActivity.class));
+            } else {
+                // Belum login → ke halaman Login
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            }
             finish();
         }
     }
