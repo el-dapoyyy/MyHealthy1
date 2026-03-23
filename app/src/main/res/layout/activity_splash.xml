@@ -12,19 +12,23 @@
         android:src="@drawable/healthy_bite_logo"
         android:layout_centerInParent="true"/>
 
-    <!-- TextView for greeting (HALO, HELLO, BONJOUR, etc.) -->
+    <!-- TextView for location address -->
     <TextView
         android:id="@+id/greeting_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="HALO"
-        android:textSize="20sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
-        android:typeface="sans"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:maxLines="2"
         android:layout_below="@id/splash_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:fontFamily="@font/exo2_extrabold"/>
 
     <!-- Flag ImageView (top-right corner) -->
