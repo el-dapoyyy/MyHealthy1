@@ -12,7 +12,20 @@
           "package_name": "com.example.myhealthy"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "501213761205-5cb8kv85onckb9q3a3chcppm9ndjo4n8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myhealthy",
+            "certificate_hash": "9b88b7148eca8f141d2094d2e83ba856d7cf8243"
+          }
+        },
+        {
+          "client_id": "501213761205-55tifmhqv4tfue39o4pjbghgqngodbv4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD8tnPODbHRgXkJQZktyItOxGwcZm1keXo"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501213761205-55tifmhqv4tfue39o4pjbghgqngodbv4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
