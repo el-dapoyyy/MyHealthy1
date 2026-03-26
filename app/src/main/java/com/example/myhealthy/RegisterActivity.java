@@ -75,6 +75,8 @@ public class RegisterActivity extends AppCompatActivity {
         TextView tvLogin      = findViewById(R.id.tv_go_to_login);
         ImageView btnBack     = findViewById(R.id.btn_back);
         LinearLayout btnGoogle = findViewById(R.id.btn_google_sign_up);
+        ImageView btnTogglePass    = findViewById(R.id.btn_toggle_password);
+        ImageView btnToggleConfirm = findViewById(R.id.btn_toggle_confirm);
 
         btnRegister.setOnClickListener(v -> attemptRegister());
 
@@ -89,6 +91,30 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         btnGoogle.setOnClickListener(v -> signInWithGoogle());
+
+        // Toggle password visibility
+        btnTogglePass.setOnClickListener(v -> {
+            if (etPassword.getInputType() == (android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                etPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                btnTogglePass.setImageResource(R.drawable.ic_eye_on);
+            } else {
+                etPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                btnTogglePass.setImageResource(R.drawable.ic_eye_off);
+            }
+            etPassword.setSelection(etPassword.getText().length());
+        });
+
+        // Toggle confirm password visibility
+        btnToggleConfirm.setOnClickListener(v -> {
+            if (etConfirmPassword.getInputType() == (android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                etConfirmPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                btnToggleConfirm.setImageResource(R.drawable.ic_eye_on);
+            } else {
+                etConfirmPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                btnToggleConfirm.setImageResource(R.drawable.ic_eye_off);
+            }
+            etConfirmPassword.setSelection(etConfirmPassword.getText().length());
+        });
     }
 
     private void attemptRegister() {
@@ -140,11 +166,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                         mAuth.getCurrentUser().updateProfile(profileUpdate)
                                 .addOnCompleteListener(profileTask -> {
-                                    mAuth.signOut();
                                     Toast.makeText(RegisterActivity.this,
-                                            "Registrasi berhasil! Silakan login.",
+                                            "Registrasi berhasil!",
                                             Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                    startActivity(new Intent(RegisterActivity.this, MainNavActivity.class));
                                     finish();
                                 });
                     } else {

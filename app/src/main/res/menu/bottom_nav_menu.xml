@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_nav_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_diary"
+        android:icon="@drawable/ic_nav_diary"
+        android:title="Catatan" />
+    <item
+        android:id="@+id/nav_calculator"
+        android:icon="@drawable/ic_nav_calculator"
+        android:title="Kalkulator" />
+    <item
+        android:id="@+id/nav_meal_plan"
+        android:icon="@drawable/ic_nav_meal"
+        android:title="Meal Plan" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_nav_profile"
+        android:title="Profil" />
+</menu>

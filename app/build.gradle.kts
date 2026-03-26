@@ -48,6 +48,7 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
 
     // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:21.3.0")

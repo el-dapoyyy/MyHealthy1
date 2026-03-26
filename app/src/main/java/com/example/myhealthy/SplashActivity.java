@@ -90,7 +90,7 @@ public class SplashActivity extends Activity {
                     com.google.firebase.auth.FirebaseAuth.getInstance();
             if (auth.getCurrentUser() != null) {
                 // Sudah login → langsung ke Menu
-                startActivity(new Intent(SplashActivity.this, MenuActivity.class));
+                startActivity(new Intent(SplashActivity.this, MainNavActivity.class));
             } else {
                 // Belum login → ke halaman Login
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));

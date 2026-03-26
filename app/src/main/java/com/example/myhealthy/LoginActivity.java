@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,19 @@ public class LoginActivity extends AppCompatActivity {
         Button btnLogin          = findViewById(R.id.login_button);
         LinearLayout btnGoogle   = findViewById(R.id.btn_google_sign_in);
         TextView tvRegister      = findViewById(R.id.tv_go_to_register);
+        ImageView btnToggle      = findViewById(R.id.btn_toggle_password);
+
+        // Toggle password visibility
+        btnToggle.setOnClickListener(v -> {
+            if (etPassword.getInputType() == (android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                etPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                btnToggle.setImageResource(R.drawable.ic_eye_on);
+            } else {
+                etPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                btnToggle.setImageResource(R.drawable.ic_eye_off);
+            }
+            etPassword.setSelection(etPassword.getText().length());
+        });
 
         // Email/Password login
         btnLogin.setOnClickListener(v -> attemptLogin());
@@ -165,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
         String displayName = (user != null && user.getDisplayName() != null)
                 ? user.getDisplayName() : "User";
         Toast.makeText(this, "Welcome, " + displayName + "!", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(LoginActivity.this, MenuActivity.class));
+        startActivity(new Intent(LoginActivity.this, MainNavActivity.class));
         finish();
     }
 }
