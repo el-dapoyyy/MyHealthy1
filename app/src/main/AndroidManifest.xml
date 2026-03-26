@@ -55,6 +55,7 @@
         <!-- MainNavActivity definition (Bottom Navigation) -->
         <activity android:name=".MainNavActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true">
         </activity>
 
