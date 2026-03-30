@@ -12,6 +12,9 @@
     <!-- Permission for notifications (required on Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- Permission for step counter (required on Android 10+) -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
     <!-- GPS feature -->
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 

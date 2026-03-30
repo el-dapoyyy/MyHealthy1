@@ -27,12 +27,12 @@ public class MainNavActivity extends AppCompatActivity {
 
             if (id == R.id.nav_home) {
                 fragment = new HomeFragment();
-            } else if (id == R.id.nav_diary) {
-                fragment = new FoodDiaryFragment();
             } else if (id == R.id.nav_calculator) {
                 fragment = new CalculatorFragment();
-            } else if (id == R.id.nav_meal_plan) {
-                fragment = new MealPlanFragment();
+            } else if (id == R.id.nav_ai_scanner) {
+                fragment = new AIScannerFragment();
+            } else if (id == R.id.nav_daily_progress) {
+                fragment = new DailyProgressFragment();
             } else if (id == R.id.nav_profile) {
                 fragment = new ProfileFragment();
             }
