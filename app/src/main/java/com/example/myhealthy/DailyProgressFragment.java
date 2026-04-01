@@ -83,6 +83,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
     private double sleepHours = 0;
     private int totalXp = 0;
     private int streak = 0;
+    private boolean moodXpAwarded = false;
     private List<String> earnedBadges = new ArrayList<>();
 
     // Mood options
@@ -211,9 +212,18 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
         }
         Map<String, Object> update = new HashMap<>();
         update.put("mood", selectedMood);
-        todayRef.set(update, SetOptions.merge());
-        addXp(5);
-        Toast.makeText(requireContext(), MOOD_LABELS[index] + " — +5 XP", Toast.LENGTH_SHORT).show();
+
+        // Award XP only on first mood selection per day
+        if (!moodXpAwarded) {
+            moodXpAwarded = true;
+            update.put("moodXpAwarded", true);
+            todayRef.set(update, SetOptions.merge());
+            addXp(5);
+            Toast.makeText(requireContext(), MOOD_LABELS[index] + " — +5 XP", Toast.LENGTH_SHORT).show();
+        } else {
+            todayRef.set(update, SetOptions.merge());
+            Toast.makeText(requireContext(), MOOD_LABELS[index], Toast.LENGTH_SHORT).show();
+        }
     }
 
     // ═══════════════════════════════════════════════════════
@@ -469,6 +479,10 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
                     sleepHours = sl;
                     tvSleepHours.setText((int) sleepHours + " jam");
                 }
+
+                // Mood XP flag
+                Boolean mxp = doc.getBoolean("moodXpAwarded");
+                moodXpAwarded = mxp != null && mxp;
 
                 // XP
                 Long xp = doc.getLong("xp");
