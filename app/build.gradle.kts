@@ -52,4 +52,7 @@ dependencies {
 
     // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:21.3.0")
+
+    // Glide (profile photo)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

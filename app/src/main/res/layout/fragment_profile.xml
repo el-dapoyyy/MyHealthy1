@@ -1,170 +1,485 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/bg_main">
+    android:background="@color/bg_main"
+    android:fillViewport="true">
 
-    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_header_green"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center_horizontal">
+        android:orientation="vertical">
 
-        <!-- Avatar Circle -->
+        <!-- Header -->
         <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:background="@drawable/bg_circle_border">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_header_green"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_nav_profile"
-                android:tint="#008B02"
-                android:contentDescription="Avatar" />
+            <!-- Avatar: Photo or Initials -->
+            <FrameLayout
+                android:layout_width="80dp"
+                android:layout_height="80dp">
+
+                <!-- Google Photo -->
+                <ImageView
+                    android:id="@+id/ivProfilePhoto"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    android:contentDescription="Foto Profil" />
+
+                <!-- Initials fallback -->
+                <FrameLayout
+                    android:id="@+id/flInitials"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/bg_circle_border"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tvInitials"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="U"
+                        android:textColor="#008B02"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/exo2_extrabold" />
+                </FrameLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tvProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama User"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/exo2_extrabold"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:id="@+id/tvProfileEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="email@example.com"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:alpha="0.9"
+                android:layout_marginTop="4dp" />
+
+            <!-- Edit Profile Button -->
+            <TextView
+                android:id="@+id/btnEditProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✏️ Edit Nama"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_button_green_pill"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvProfileName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nama User"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/exo2_extrabold"
-            android:layout_marginTop="12dp" />
-
-        <TextView
-            android:id="@+id/tvProfileEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="email@example.com"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:alpha="0.9"
-            android:layout_marginTop="4dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
-
-        <!-- Info Card -->
+        <!-- Content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/bg_card_white_rounded"
-            android:padding="20dp"
-            android:elevation="2dp"
-            android:layout_marginBottom="16dp">
+            android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- === Informasi Akun === -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Informasi Akun"
-                android:textColor="#222222"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white_rounded"
+                android:padding="20dp"
+                android:elevation="2dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="👤 Informasi Akun"
+                    android:textColor="#222222"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/exo2_extrabold"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Nama -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nama"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvInfoName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#222222"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Email -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Email"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvInfoEmail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#222222"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Provider -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Login via"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvInfoProvider"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#222222"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- === Data Kesehatan === -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white_rounded"
+                android:padding="20dp"
+                android:elevation="2dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📊 Data Kesehatan"
+                    android:textColor="#222222"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/exo2_extrabold"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Berat Badan"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvHealthWeight"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#222222"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tinggi Badan"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvHealthHeight"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#222222"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="BMI"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvHealthBmi"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#008B02"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Target Kalori"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvHealthCalTarget"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#008B02"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- === Statistik Gamifikasi === -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white_rounded"
+                android:padding="20dp"
+                android:elevation="2dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏆 Statistik"
+                    android:textColor="#222222"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/exo2_extrabold"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="⭐ Level"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvStatsLevel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#222222"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="🔥 Streak"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvStatsStreak"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#222222"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="📅 Total XP"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvStatsXp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#222222"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="🏅 Badges"
+                        android:textColor="#999999"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvStatsBadges"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="-"
+                        android:textColor="#222222"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- === Tentang Aplikasi === -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white_rounded"
+                android:padding="20dp"
+                android:elevation="2dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ℹ️ Tentang Aplikasi"
+                    android:textColor="#222222"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/exo2_extrabold"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MyHealthy v1.0"
+                    android:textColor="#666666"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="© 2026 Daffa"
+                    android:textColor="#999999"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <!-- Logout Button -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Logout"
+                android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/exo2_extrabold"
-                android:layout_marginBottom="12dp" />
+                android:background="@drawable/bg_button_dark"
+                android:stateListAnimator="@null"
+                android:layout_marginBottom="8dp" />
 
-            <LinearLayout
+            <!-- Delete Account Button -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDeleteAccount"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
+                android:layout_height="50dp"
+                android:text="Hapus Akun"
+                android:textColor="#FF4444"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_card_white_rounded"
+                android:stateListAnimator="@null"
+                android:layout_marginBottom="16dp" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Nama"
-                    android:textColor="#999999"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tvInfoName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="-"
-                    android:textColor="#222222"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Email"
-                    android:textColor="#999999"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tvInfoEmail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="-"
-                    android:textColor="#222222"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Login via"
-                    android:textColor="#999999"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tvInfoProvider"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="-"
-                    android:textColor="#222222"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
         </LinearLayout>
-
-        <!-- Logout Button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnLogout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Logout"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/exo2_extrabold"
-            android:background="@drawable/bg_button_dark"
-            android:stateListAnimator="@null" />
-
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
