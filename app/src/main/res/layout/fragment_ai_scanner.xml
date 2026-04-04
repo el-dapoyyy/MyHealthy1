@@ -127,7 +127,46 @@
                     android:layout_marginStart="6dp" />
             </LinearLayout>
 
-            <!-- Analysis Result Card -->
+            <!-- Human-in-the-Loop Pre-Analysis Context -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_white_rounded"
+                android:elevation="2dp"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💡 Bantu AI (Tandai sebelum foto)"
+                    android:textColor="#008B02"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <CheckBox
+                    android:id="@+id/cbIsFried"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Makanan ini digoreng berminyak"
+                    android:textSize="13sp"
+                    android:textColor="#444444"
+                    android:buttonTint="#008B02"
+                    android:minHeight="32dp"/>
+                
+                <CheckBox
+                    android:id="@+id/cbIsSantan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mengandung bumbu kacang / santan"
+                    android:textSize="13sp"
+                    android:textColor="#444444"
+                    android:buttonTint="#008B02"
+                    android:minHeight="32dp"/>
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/resultCard"
                 android:layout_width="match_parent"

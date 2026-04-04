@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,6 +65,7 @@ public class AIScannerFragment extends Fragment {
     private TextView tvScannerStatus, tvSource;
     private EditText etName, etCalories, etProtein, etCarbs, etFat;
     private Spinner spinnerMealType;
+    private CheckBox cbIsFried, cbIsSantan;
 
     private Bitmap capturedBitmap;
     private final String[] MEAL_TYPES = {"Sarapan", "Makan Siang", "Makan Malam", "Snack"};
@@ -87,6 +89,9 @@ public class AIScannerFragment extends Fragment {
         etCarbs = view.findViewById(R.id.etResultCarbs);
         etFat = view.findViewById(R.id.etResultFat);
         spinnerMealType = view.findViewById(R.id.spinnerMealType);
+        
+        cbIsFried = view.findViewById(R.id.cbIsFried);
+        cbIsSantan = view.findViewById(R.id.cbIsSantan);
 
         // Meal type spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -223,20 +228,37 @@ public class AIScannerFragment extends Fragment {
                 JSONObject imagePart = new JSONObject();
                 imagePart.put("inline_data", inlineData);
 
-            // 1. Text prompt — intentionally strict
+            // HITL Check
+            String hitlInput = "";
+            if (cbIsFried != null && cbIsFried.isChecked()) {
+                hitlInput += "- PENGGUNA MENGONFIRMASI MAKANAN INI DIGORENG/BERMINYAK. Tambahkan nilai kalori dan lemak karena minyak goreng!\n";
+            }
+            if (cbIsSantan != null && cbIsSantan.isChecked()) {
+                hitlInput += "- PENGGUNA MENGONFIRMASI MAKANAN INI BERKUAH SANTAN/KACANG KENTAL. Tambahkan nilai kalori dan lemak!\n";
+            }
+
+            // 1. Text prompt — intentionally strict (Advanced Prompt Engineering)
             JSONObject textPart = new JSONObject();
             textPart.put("text",
-                    "Kamu adalah ahli gizi. Analisis foto makanan ini dengan cermat.\n\n" +
-                    "Tugas:\n" +
-                    "1. Identifikasi nama makanan dalam Bahasa Indonesia\n" +
-                    "2. Estimasi porsi yang terlihat\n" +
-                    "3. PERKIRAKAN kandungan nutrisi dari porsi tersebut (Kalori, Protein, Karbohidrat, Lemak).\n\n" +
-                    "SYARAT WAJIB OUTPUT JSON:\n" +
-                    "- Kalori wajib integer (angka saja, tanpa 'kkal').\n" +
-                    "- Protein, Karbohidrat, Lemak wajib bernilai decimal/float (angka saja, TANPA tulisan 'g' atau 'gram'). WAJIB DIPERKIRAKAN, JANGAN DIKOSONGKAN!\n" +
-                    "- Jika bukan makanan, kembalikan: {\"error\": \"Bukan makanan\"}\n\n" +
-                    "Format yang benar:\n" +
-                    "{\"nama\": \"Nasi Goreng\", \"kalori\": 450, \"protein\": 15.5, \"karbohidrat\": 55.0, \"lemak\": 12.0}");
+                    "Kamu adalah Ahli Gizi Profesional spesialis makanan Indonesia.\n" +
+                    "Tugas: Analisis foto makanan ini dan perkirakan nilai gizi per porsi yang terlihat.\n\n" +
+                    "INFORMASI TAMBAHAN DARI PENGGUNA (Mutlak Diikuti):\n" +
+                    (hitlInput.isEmpty() ? "- (Tidak ada catatan khusus dari pengguna)\n" : hitlInput) +
+                    "\n" +
+                    "INSTRUKSI AKURASI TINGGI:\n" +
+                    "1. Perhatikan porsi nyata (besar/kecil) dari benda di sekitarnya.\n" +
+                    "2. KALORI TERSEMBUNYI: Jika makanan terlihat mengkilap (digoreng/minyak) atau berkuah kental (santan/bumbu kacang), WAJIB tambahkan +50 hingga +150 kkal dari estimasi makanan rebus biasa.\n" +
+                    "3. Jangan abaikan kerupuk, kecap, atau sambal jika terlihat jelas.\n\n" +
+                    "SYARAT WAJIB OUTPUT JSON PURE:\n" +
+                    "- 'kalori' wajib integer murni.\n" +
+                    "- 'protein', 'karbohidrat', 'lemak' wajib desimal (contoh: 15.5) TANPA tulisan 'g' atau gram. WAJIB DIPERKIRAKAN 100%, JANGAN DIKOSONGKAN!\n" +
+                    "- Jika bukan makanan/kosong, kembalikan: {\"error\": \"Bukan makanan\"}\n\n" +
+                    "CONTOH REFERENSI AKURAT (Berdasarkan Makanan Lokal):\n" +
+                    "Jika gambar Nasi Goreng berminyak porsi normal:\n" +
+                    "{\"nama\": \"Nasi Goreng Spesial\", \"kalori\": 450, \"protein\": 14.5, \"karbohidrat\": 55.0, \"lemak\": 18.0}\n\n" +
+                    "Jika melihat Sate Ayam Bumbu Kacang (5 tusuk):\n" +
+                    "{\"nama\": \"Sate Ayam Bumbu Kacang\", \"kalori\": 250, \"protein\": 15.0, \"karbohidrat\": 12.0, \"lemak\": 16.5}\n\n" +
+                    "Berikan hasil JSON untuk gambar ini sekarang:");
 
             // Contents array
             JSONArray parts = new JSONArray();
@@ -252,7 +274,7 @@ public class AIScannerFragment extends Fragment {
             // Generation config
             JSONObject generationConfig = new JSONObject();
             generationConfig.put("responseMimeType", "application/json");
-            generationConfig.put("temperature", 0.4); // slightly higher temp for guessing macros
+            generationConfig.put("temperature", 0.2); // Lower temp for more strict analytical counting
 
             // Final request body
             JSONObject requestBody = new JSONObject();
