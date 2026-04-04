@@ -5,9 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.myhealthy"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.myhealthy"
@@ -17,6 +15,18 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Read Gemini API key from local.properties
+        val localFile = rootProject.file("local.properties")
+        val geminiKey = if (localFile.exists()) {
+            localFile.readLines().find { it.startsWith("GEMINI_API_KEY=") }
+                ?.substringAfter("=")?.trim() ?: ""
+        } else ""
+        buildConfigField("String", "GEMINI_API_KEY", "\"$geminiKey\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {

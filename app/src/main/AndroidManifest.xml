@@ -15,6 +15,13 @@
     <!-- Permission for step counter (required on Android 10+) -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
+    <!-- Camera for AI Scanner -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <!-- Internet for Gemini API -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- GPS feature -->
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 

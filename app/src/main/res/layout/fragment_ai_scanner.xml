@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F6F8"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_header_green"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AI Food Scanner"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/exo2_extrabold" />
+
+            <TextView
+                android:id="@+id/tvScannerStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚡ Gemini AI Ready"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:alpha="0.9"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Image Preview -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="@drawable/bg_card_white_rounded"
+                android:elevation="3dp"
+                android:layout_marginBottom="12dp">
+
+                <ImageView
+                    android:id="@+id/ivFoodPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    android:contentDescription="Food Photo" />
+
+                <LinearLayout
+                    android:id="@+id/placeholderContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📷"
+                        android:textSize="48sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ambil foto atau pilih dari galeri"
+                        android:textColor="#999999"
+                        android:textSize="13sp"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <!-- Loading spinner -->
+                <ProgressBar
+                    android:id="@+id/progressAnalyzing"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <!-- Camera + Gallery Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnCamera"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="📷 Kamera"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/bg_button_green"
+                    android:stateListAnimator="@null"
+                    android:layout_marginEnd="6dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnGallery"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="🖼️ Galeri"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/bg_button_dark"
+                    android:stateListAnimator="@null"
+                    android:layout_marginStart="6dp" />
+            </LinearLayout>
+
+            <!-- Analysis Result Card -->
+            <LinearLayout
+                android:id="@+id/resultCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_white_rounded"
+                android:elevation="3dp"
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📋 Hasil Analisis"
+                    android:textColor="#222222"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/exo2_extrabold"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Source indicator -->
+                <TextView
+                    android:id="@+id/tvSource"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚡ via Gemini AI"
+                    android:textColor="#008B02"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Food Name -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nama Makanan"
+                    android:textColor="#999999"
+                    android:textSize="12sp" />
+                <EditText
+                    android:id="@+id/etResultName"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:hint="Nama makanan"
+                    android:textSize="14sp"
+                    android:textColor="#222222"
+                    android:background="@drawable/bg_input_bordered"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Calories -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kalori (kkal)"
+                    android:textColor="#999999"
+                    android:textSize="12sp" />
+                <EditText
+                    android:id="@+id/etResultCalories"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:textSize="14sp"
+                    android:textColor="#222222"
+                    android:background="@drawable/bg_input_bordered"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Macros Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <!-- Protein -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="4dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Protein (g)"
+                            android:textColor="#999999"
+                            android:textSize="11sp" />
+                        <EditText
+                            android:id="@+id/etResultProtein"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:hint="0"
+                            android:inputType="numberDecimal"
+                            android:textSize="13sp"
+                            android:textColor="#222222"
+                            android:background="@drawable/bg_input_bordered"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp" />
+                    </LinearLayout>
+
+                    <!-- Carbs -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Karbo (g)"
+                            android:textColor="#999999"
+                            android:textSize="11sp" />
+                        <EditText
+                            android:id="@+id/etResultCarbs"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:hint="0"
+                            android:inputType="numberDecimal"
+                            android:textSize="13sp"
+                            android:textColor="#222222"
+                            android:background="@drawable/bg_input_bordered"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp" />
+                    </LinearLayout>
+
+                    <!-- Fat -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="4dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lemak (g)"
+                            android:textColor="#999999"
+                            android:textSize="11sp" />
+                        <EditText
+                            android:id="@+id/etResultFat"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:hint="0"
+                            android:inputType="numberDecimal"
+                            android:textSize="13sp"
+                            android:textColor="#222222"
+                            android:background="@drawable/bg_input_bordered"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Meal Type Spinner -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Waktu Makan"
+                    android:textColor="#999999"
+                    android:textSize="12sp" />
+                <Spinner
+                    android:id="@+id/spinnerMealType"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_input_bordered"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Save Button -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSaveToDiary"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="✅ Simpan ke Catatan Makan"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/bg_button_green"
+                    android:stateListAnimator="@null" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
