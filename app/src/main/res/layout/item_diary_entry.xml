@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Makanan"
-            android:textColor="#222222"
+            android:textColor="@color/text_primary"
             android:textSize="15sp"
             android:textStyle="bold"
             android:fontFamily="@font/exo2_extrabold" />
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sarapan"
-            android:textColor="#999999"
+            android:textColor="@color/text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
 

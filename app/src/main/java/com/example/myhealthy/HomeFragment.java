@@ -75,11 +75,11 @@ public class HomeFragment extends Fragment {
         selectedTag = tag;
 
         tagAll.setBackgroundResource(R.drawable.bg_tag_unselected_gray);
-        tagAll.setTextColor(requireContext().getResources().getColor(android.R.color.black));
+        tagAll.setTextColor(requireContext().getResources().getColor(android.R.color.white));
         tagHewani.setBackgroundResource(R.drawable.bg_tag_unselected_gray);
-        tagHewani.setTextColor(requireContext().getResources().getColor(android.R.color.black));
+        tagHewani.setTextColor(requireContext().getResources().getColor(android.R.color.white));
         tagNabati.setBackgroundResource(R.drawable.bg_tag_unselected_gray);
-        tagNabati.setTextColor(requireContext().getResources().getColor(android.R.color.black));
+        tagNabati.setTextColor(requireContext().getResources().getColor(android.R.color.white));
 
         if (tag == TagType.ALL) {
             tagAll.setBackgroundResource(R.drawable.bg_tag_selected_green);

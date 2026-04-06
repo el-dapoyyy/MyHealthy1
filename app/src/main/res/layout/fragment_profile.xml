@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="👤 Informasi Akun"
-                    android:textColor="#222222"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/exo2_extrabold"
@@ -132,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Nama"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvInfoName"
@@ -140,7 +140,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="-"
-                        android:textColor="#222222"
+                        android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -156,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Email"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvInfoEmail"
@@ -164,7 +164,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="-"
-                        android:textColor="#222222"
+                        android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -179,7 +179,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Login via"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvInfoProvider"
@@ -187,7 +187,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="-"
-                        android:textColor="#222222"
+                        android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -207,7 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="📊 Data Kesehatan"
-                    android:textColor="#222222"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/exo2_extrabold"
@@ -223,7 +223,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Berat Badan"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvHealthWeight"
@@ -231,7 +231,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="-"
-                        android:textColor="#222222"
+                        android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -246,7 +246,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Tinggi Badan"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvHealthHeight"
@@ -254,7 +254,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="-"
-                        android:textColor="#222222"
+                        android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -269,7 +269,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="BMI"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvHealthBmi"
@@ -291,7 +291,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Target Kalori"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvHealthCalTarget"
@@ -319,7 +319,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🏆 Statistik"
-                    android:textColor="#222222"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/exo2_extrabold"
@@ -335,7 +335,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="⭐ Level"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvStatsLevel"
@@ -343,7 +343,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="-"
-                        android:textColor="#222222"
+                        android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -358,7 +358,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="🔥 Streak"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvStatsStreak"
@@ -366,7 +366,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="-"
-                        android:textColor="#222222"
+                        android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -381,7 +381,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="📅 Total XP"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvStatsXp"
@@ -389,7 +389,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="-"
-                        android:textColor="#222222"
+                        android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -403,7 +403,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="🏅 Badges"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
                     <TextView
                         android:id="@+id/tvStatsBadges"
@@ -411,7 +411,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="-"
-                        android:textColor="#222222"
+                        android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -431,7 +431,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ℹ️ Tentang Aplikasi"
-                    android:textColor="#222222"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/exo2_extrabold"
@@ -441,14 +441,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MyHealthy v1.0"
-                    android:textColor="#666666"
+                    android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="© 2026 Daffa"
-                    android:textColor="#999999"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:layout_marginTop="2dp" />
             </LinearLayout>

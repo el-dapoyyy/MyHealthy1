@@ -76,10 +76,10 @@
                 android:maxLength="50"
                 android:singleLine="true"
                 android:textSize="14sp"
-                android:textColor="#000000"
+                android:textColor="@color/text_primary"
                 android:fontFamily="@font/exo2_extrabold"
                 android:background="@drawable/bg_input_gray"
-                android:textColorHint="#999999"
+                android:textColorHint="@color/text_secondary"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:layout_marginBottom="10dp" />
@@ -94,10 +94,10 @@
                 android:maxLength="50"
                 android:singleLine="true"
                 android:textSize="14sp"
-                android:textColor="#000000"
+                android:textColor="@color/text_primary"
                 android:fontFamily="@font/exo2_extrabold"
                 android:background="@drawable/bg_input_gray"
-                android:textColorHint="#999999"
+                android:textColorHint="@color/text_secondary"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:layout_marginBottom="10dp" />
@@ -117,10 +117,10 @@
                     android:maxLength="30"
                     android:singleLine="true"
                     android:textSize="14sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_primary"
                     android:fontFamily="@font/exo2_extrabold"
                     android:background="@drawable/bg_input_gray"
-                    android:textColorHint="#999999"
+                    android:textColorHint="@color/text_secondary"
                     android:paddingStart="16dp"
                     android:paddingEnd="48dp" />
 
@@ -151,10 +151,10 @@
                     android:maxLength="30"
                     android:singleLine="true"
                     android:textSize="14sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_primary"
                     android:fontFamily="@font/exo2_extrabold"
                     android:background="@drawable/bg_input_gray"
-                    android:textColorHint="#999999"
+                    android:textColorHint="@color/text_secondary"
                     android:paddingStart="16dp"
                     android:paddingEnd="48dp" />
 
@@ -205,7 +205,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Register with google"
-                    android:textColor="#333333"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:fontFamily="@font/exo2_extrabold"
                     android:layout_marginStart="10dp" />

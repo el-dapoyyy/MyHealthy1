@@ -4,7 +4,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/bg_main">
 
     <LinearLayout
         android:id="@+id/headerContainer"
@@ -40,6 +40,9 @@
             android:singleLine="true"
             android:imeOptions="actionSearch"
             android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/text_secondary"
+            android:drawableTint="@color/white"
             android:drawableStart="@android:drawable/ic_menu_search"
             android:drawablePadding="10dp" />
     </LinearLayout>
@@ -53,7 +56,7 @@
         android:paddingEnd="16dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:background="@android:color/white"
+        android:background="@color/bg_main"
         app:layout_constraintTop_toBottomOf="@id/headerContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -78,7 +81,7 @@
             android:gravity="center"
             android:text="Hewani"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:background="@drawable/bg_tag_unselected_gray" />
 
         <TextView
@@ -90,7 +93,7 @@
             android:gravity="center"
             android:text="Nabati"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:background="@drawable/bg_tag_unselected_gray" />
     </LinearLayout>
 

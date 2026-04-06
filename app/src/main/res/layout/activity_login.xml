@@ -70,10 +70,10 @@
                 android:maxLength="50"
                 android:singleLine="true"
                 android:textSize="14sp"
-                android:textColor="#000000"
+                android:textColor="@color/text_primary"
                 android:fontFamily="@font/exo2_extrabold"
                 android:background="@drawable/bg_input_gray"
-                android:textColorHint="#999999"
+                android:textColorHint="@color/text_secondary"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:layout_marginBottom="10dp" />
@@ -93,10 +93,10 @@
                     android:maxLength="30"
                     android:singleLine="true"
                     android:textSize="14sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_primary"
                     android:fontFamily="@font/exo2_extrabold"
                     android:background="@drawable/bg_input_gray"
-                    android:textColorHint="#999999"
+                    android:textColorHint="@color/text_secondary"
                     android:paddingStart="16dp"
                     android:paddingEnd="48dp" />
 
@@ -144,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="  Atau login dengan  "
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:fontFamily="@font/exo2_extrabold" />
 
@@ -185,7 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Belum punya akun? "
-                    android:textColor="#333333"
+                    android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/exo2_extrabold" />

@@ -90,13 +90,13 @@ public class MenuActivity extends AppCompatActivity {
 
         // reset semua jadi unselected
         tagAll.setBackgroundResource(R.drawable.bg_tag_unselected_gray);
-        tagAll.setTextColor(getResources().getColor(android.R.color.black));
+        tagAll.setTextColor(getResources().getColor(android.R.color.white));
 
         tagHewani.setBackgroundResource(R.drawable.bg_tag_unselected_gray);
-        tagHewani.setTextColor(getResources().getColor(android.R.color.black));
+        tagHewani.setTextColor(getResources().getColor(android.R.color.white));
 
         tagNabati.setBackgroundResource(R.drawable.bg_tag_unselected_gray);
-        tagNabati.setTextColor(getResources().getColor(android.R.color.black));
+        tagNabati.setTextColor(getResources().getColor(android.R.color.white));
 
         // selected jadi hijau
         if (tag == TagType.ALL) {

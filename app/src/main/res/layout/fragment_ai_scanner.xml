@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F6F8"
+    android:background="@color/bg_main"
     android:fillViewport="true">
 
     <LinearLayout
@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ambil foto atau pilih dari galeri"
-                        android:textColor="#999999"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp"
                         android:layout_marginTop="8dp" />
                 </LinearLayout>
@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:text="Makanan ini digoreng berminyak"
                     android:textSize="13sp"
-                    android:textColor="#444444"
+                    android:textColor="@color/text_primary"
                     android:buttonTint="#008B02"
                     android:minHeight="32dp"/>
                 
@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:text="Mengandung bumbu kacang / santan"
                     android:textSize="13sp"
-                    android:textColor="#444444"
+                    android:textColor="@color/text_primary"
                     android:buttonTint="#008B02"
                     android:minHeight="32dp"/>
 
@@ -181,7 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="📋 Hasil Analisis"
-                    android:textColor="#222222"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/exo2_extrabold"
@@ -203,7 +203,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nama Makanan"
-                    android:textColor="#999999"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 <EditText
                     android:id="@+id/etResultName"
@@ -211,7 +211,7 @@
                     android:layout_height="44dp"
                     android:hint="Nama makanan"
                     android:textSize="14sp"
-                    android:textColor="#222222"
+                    android:textColor="@color/text_primary"
                     android:background="@drawable/bg_input_bordered"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
@@ -222,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Kalori (kkal)"
-                    android:textColor="#999999"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 <EditText
                     android:id="@+id/etResultCalories"
@@ -231,7 +231,7 @@
                     android:hint="0"
                     android:inputType="number"
                     android:textSize="14sp"
-                    android:textColor="#222222"
+                    android:textColor="@color/text_primary"
                     android:background="@drawable/bg_input_bordered"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
@@ -255,7 +255,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Protein (g)"
-                            android:textColor="#999999"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                         <EditText
                             android:id="@+id/etResultProtein"
@@ -264,7 +264,7 @@
                             android:hint="0"
                             android:inputType="numberDecimal"
                             android:textSize="13sp"
-                            android:textColor="#222222"
+                            android:textColor="@color/text_primary"
                             android:background="@drawable/bg_input_bordered"
                             android:paddingStart="8dp"
                             android:paddingEnd="8dp" />
@@ -282,7 +282,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Karbo (g)"
-                            android:textColor="#999999"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                         <EditText
                             android:id="@+id/etResultCarbs"
@@ -291,7 +291,7 @@
                             android:hint="0"
                             android:inputType="numberDecimal"
                             android:textSize="13sp"
-                            android:textColor="#222222"
+                            android:textColor="@color/text_primary"
                             android:background="@drawable/bg_input_bordered"
                             android:paddingStart="8dp"
                             android:paddingEnd="8dp" />
@@ -308,7 +308,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Lemak (g)"
-                            android:textColor="#999999"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                         <EditText
                             android:id="@+id/etResultFat"
@@ -317,7 +317,7 @@
                             android:hint="0"
                             android:inputType="numberDecimal"
                             android:textSize="13sp"
-                            android:textColor="#222222"
+                            android:textColor="@color/text_primary"
                             android:background="@drawable/bg_input_bordered"
                             android:paddingStart="8dp"
                             android:paddingEnd="8dp" />
@@ -329,7 +329,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Waktu Makan"
-                    android:textColor="#999999"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 <Spinner
                     android:id="@+id/spinnerMealType"

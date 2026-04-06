@@ -4,13 +4,15 @@
         <item name="colorPrimaryVariant">#388E3C</item>
         <item name="colorOnPrimary">#FFFFFF</item>
 
-        <item name="colorSecondary">#FFC107</item>
-        <item name="colorSecondaryVariant">#FFA000</item>
-        <item name="colorOnSecondary">#000000</item>
+        <item name="colorSecondary">#008B02</item>
+        <item name="colorSecondaryVariant">#006400</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
 
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">#0B0B0B</item>
 
-        <item name="android:windowBackground">?attr/colorSurface</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:windowBackground">@color/bg_main</item>
+        <item name="colorSurface">@color/bg_main</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:textColor">@color/text_primary</item>
     </style>
 </resources>

@@ -144,7 +144,6 @@ public class FoodDiaryFragment extends Fragment {
         db.collection("users").document(userId)
                 .collection("diary")
                 .whereEqualTo("date", todayStr)
-                .orderBy("mealType", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     entries.clear();
@@ -157,11 +156,19 @@ public class FoodDiaryFragment extends Fragment {
                             total += entry.calories;
                         }
                     }
+                    
+                    // Sort programmatically since Firestore requires build-time Index for mixed queries
+                    entries.sort((a, b) -> {
+                        String m1 = a.mealType != null ? a.mealType : "";
+                        String m2 = b.mealType != null ? b.mealType : "";
+                        return m1.compareTo(m2);
+                    });
+                    
                     adapter.notifyDataSetChanged();
                     tvTotalCalories.setText(total + " kkal");
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(requireContext(), "Gagal memuat data", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Gagal memuat: " + e.getMessage(), Toast.LENGTH_LONG).show()
                 );
     }
 }

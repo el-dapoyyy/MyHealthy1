@@ -5,12 +5,18 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="bg_main">#FFFFFFFF</color>
-    <color name="text_primary">#FF000000</color>
-    <color name="bg_gray_box">#FF808080</color>
-    <color name="text_inverse">#FFFFFFFF</color>
-    <color name="card_gray">#F5F5F5</color>
+    <color name="bg_main">#0B0B0B</color>         <!-- Black Background -->
+    <color name="text_primary">#FFFFFF</color>    <!-- White text -->
+    <color name="text_secondary">#999999</color>  <!-- Lighter Gray for descriptions -->
+    <color name="bg_gray_box">#1C1C1E</color>     <!-- Darker Gray for inputs -->
+    <color name="text_inverse">#000000</color>    <!-- Black text on light buttons -->
+    <color name="card_gray">#151515</color>       <!-- Very Dark Gray for Cards -->
+    <color name="card_border">#2C2C2E</color>     <!-- Border for Cards to pop out -->
 
     <color name="green_checked">#008B02</color>
-    <color name="green_unchecked">#808080</color>
+    <color name="green_unchecked">#4A4A4A</color> <!-- Darker gray for unchecked progress -->
+    
+    <!-- Input Field Specifics -->
+    <color name="input_bg">#1C1C1E</color>
+    <color name="input_border">#333333</color>
 </resources>
