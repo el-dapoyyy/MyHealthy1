@@ -116,13 +116,16 @@ public class HomeFragment extends Fragment {
 
     private final Set<String> HEWANI_NAMES = new HashSet<String>() {{
         add("dada ayam"); add("paha ayam"); add("telur"); add("ikan tuna");
-        add("ikan salmon"); add("dada kalkun"); add("greek yogurt");
+        add("salmon panggang"); add("yoghurt yunani"); add("daging sapi tanpa lemak");
+        add("ikan nila"); add("dada kalkun"); add("susu sapi rendah lemak"); add("keju cottage");
     }};
 
     private final Set<String> NABATI_NAMES = new HashSet<String>() {{
         add("tahu"); add("tempe"); add("brokoli"); add("oatmeal");
-        add("bayam"); add("kacang almond"); add("alpukat"); add("quinoa");
-        add("ubi jalar"); add("edamame"); add("tomat");
+        add("quinoa"); add("bayam"); add("alpukat"); add("kacang almond");
+        add("beras merah"); add("ubi jalar"); add("edamame");
+        add("biji chia"); add("kacang kenari"); add("kedelai hitam"); 
+        add("kacang hijau"); add("gandum utuh"); add("susu kedelai");
     }};
 
     private boolean isHewani(FoodItem f) {
@@ -207,6 +210,188 @@ public class HomeFragment extends Fragment {
                 R.drawable.oatmeal,
                 13, 379, 7, 67,
                 "• Berat bersih contoh saji: 40 g (kering)\n• Rekomendasi: Seduh air panas/susu rendah lemak\n• Penyimpanan: Simpan kering & tertutup rapat",
+                4.6f
+        ));
+
+        // 10 Menu Baru
+        allFoods.add(new FoodItem(
+                "Salmon Panggang",
+                "Kaya akan Omega-3 dan protein berkualitas tinggi. Baik untuk kesehatan jantung dan otak.",
+                R.drawable.salmon_panggang,
+                22, 206, 13, 0,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Panggang/Bakar dengan sedikit minyak zaitun\n• Penyimpanan: Kulkas/Freezer",
+                5.0f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Quinoa",
+                "Sumber karbohidrat kompleks bebas gluten dan mengandung 9 asam amino esensial.",
+                R.drawable.quinoa,
+                4, 120, 2, 21,
+                "• Berat bersih contoh saji: 100 g (matang)\n• Rekomendasi: Rebus sebagai pengganti nasi\n• Penyimpanan: Tempat kering tertutup rapat",
+                5.0f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Bayam",
+                "Sayuran hijau padat nutrisi, tinggi zat besi, kalsium, dan vitamin K.",
+                R.drawable.bayam,
+                3, 23, 0, 4,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Rebus sebentar atau jadikan salad segar\n• Penyimpanan: Kulkas 3-5 hari",
+                5.0f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Alpukat",
+                "Buah dengan lemak sehat (tak jenuh tunggal) yang baik untuk kolesterol.",
+                R.drawable.alpukat,
+                2, 160, 15, 9,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Dimakan langsung atau sebagai olesan\n• Penyimpanan: Suhu ruang hingga matang, lalu kulkas",
+                4.8f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Yoghurt Yunani",
+                "Yoghurt kental tinggi protein dan probiotik, sangat baik untuk pencernaan.",
+                R.drawable.yoghurt_yunani,
+                10, 100, 0, 4,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Dimakan langsung atau campur dengan buah\n• Penyimpanan: Simpan selalu di kulkas",
+                4.9f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Kacang Almond",
+                "Camilan sehat tinggi vitamin E, magnesium, dan lemak sehat tak jenuh.",
+                R.drawable.kacang_almond,
+                21, 579, 50, 22,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Camilan panggang tanpa garam\n• Penyimpanan: Toples kedap udara",
+                4.7f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Daging Sapi Tanpa Lemak",
+                "Sumber zat besi, zinc, dan vitamin B12 yang sangat baik untuk sel darah merah.",
+                R.drawable.daging_sapi_tanpa_lemak,
+                26, 250, 15, 0,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Rebus, sup, atau panggang matang\n• Penyimpanan: Freezer",
+                4.6f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Beras Merah",
+                "Alternatif nasi putih yang jauh lebih kaya serat dan indeks glikemik rendah.",
+                R.drawable.beras_merah,
+                3, 110, 1, 23,
+                "• Berat bersih contoh saji: 100 g (matang)\n• Rekomendasi: Tanak seperti nasi biasa\n• Penyimpanan: Tempat kering dan sejuk",
+                4.9f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Ubi Jalar",
+                "Mengandung karbohidrat kompleks, serat tinggi, dan kaya akan vitamin A.",
+                R.drawable.ubi_jalar,
+                2, 86, 0, 20,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Rebus, kukus, atau panggang\n• Penyimpanan: Suhu ruang, sejuk",
+                4.8f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Edamame",
+                "Kedelai muda utuh yang direbus, merupakan camilan tinggi protein dan serat.",
+                R.drawable.edamame,
+                12, 121, 5, 11,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Rebus dengan sedikit garam laut\n• Penyimpanan: Kulkas/Freezer",
+                4.8f
+        ));
+
+        // 10 Menu Baru Lagi (Gelombang 2)
+        allFoods.add(new FoodItem(
+                "Biji Chia",
+                "Superfood mungil padat Omega-3, serat, dan kalsium. Sangat baik untuk pencernaan.",
+                R.drawable.biji_chia,
+                17, 486, 31, 42,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Rendam dalam air/susu hingga mengembang\n• Penyimpanan: Tempat kering dan kedap udara",
+                4.9f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Kacang Kenari",
+                "Sumber lemak sehat otak dan antioksidan yang sangat tinggi dibanding kacang lainnya.",
+                R.drawable.kacang_kenari,
+                15, 654, 65, 14,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Camilan mentah atau panggang\n• Penyimpanan: Kulkas agar minyak tidak tengik",
+                4.8f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Ikan Nila",
+                "Ikan air tawar rendah kalori dan lemak, namun sangat kaya akan protein.",
+                R.drawable.ikan_nila,
+                26, 128, 3, 0,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Kukus, tim, atau panggang\n• Penyimpanan: Freezer",
+                4.6f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Dada Kalkun",
+                "Alternatif dada ayam dengan kalori lebih rendah dan protein luar biasa tinggi.",
+                R.drawable.dada_kalkun,
+                17, 104, 2, 4,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Panggang atau rebus\n• Penyimpanan: Kulkas/Freezer",
+                4.8f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Susu Sapi Rendah Lemak",
+                "Sumber kalsium dan vitamin D harian dengan pangkasan kalori dari lemak jenuh.",
+                R.drawable.susu_sapi_rendah_lemak,
+                3, 42, 1, 5,
+                "• Contoh saji: 100 ml\n• Rekomendasi: Diminum langsung atau campur sereal\n• Penyimpanan: Kulkas",
+                4.5f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Kedelai Hitam",
+                "Kaya antosianin (antioksidan) dan serat yang sangat baik untuk gula darah.",
+                R.drawable.kedelai_hitam,
+                11, 120, 5, 12,
+                "• Berat bersih contoh saji: 100 g (rebus)\n• Rekomendasi: Rebus dan jadikan pelengkap salad\n• Penyimpanan: Tempat kering sebelum direbus",
+                4.8f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Kacang Hijau",
+                "Karbohidrat kompleks yang aman untuk lambung dan tinggi folat.",
+                R.drawable.kacang_hijau,
+                7, 105, 0, 19,
+                "• Berat bersih contoh saji: 100 g (rebus)\n• Rekomendasi: Bubur tanpa santan manis alami\n• Penyimpanan: Tempat sejuk kering",
+                4.7f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Gandum Utuh",
+                "Biji-bijian utuh kaya serat tidak larut, menjaga pencernaan dan kenyang lebih lama.",
+                R.drawable.gandum_utuh,
+                13, 340, 2, 71,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Rebus atau jadikan roti gandum utuh\n• Penyimpanan: Toples tertutup rapat",
+                4.6f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Keju Cottage",
+                "Keju segar tinggi protein kasein, sangat disukai atlet untuk pemulihan otot malam hari.",
+                R.drawable.keju_cottage,
+                11, 98, 4, 3,
+                "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Dicampur buah atau olesan roti\n• Penyimpanan: Kulkas (cepat basi di suhu ruang)",
+                4.7f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Susu Kedelai",
+                "Alternatif susu sapi bebas laktosa, kaya isoflavon dan protein nabati.",
+                R.drawable.susu_kedelai,
+                3, 54, 2, 6,
+                "• Contoh saji: 100 ml (tanpa gula)\n• Rekomendasi: Minuman hangat harian\n• Penyimpanan: Kulkas",
                 4.6f
         ));
     }
