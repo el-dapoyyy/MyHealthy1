@@ -30,10 +30,10 @@ public class FoodDetailActivity extends AppCompatActivity {
         foodDesc.setText(getIntent().getStringExtra("desc"));
         foodImage.setImageResource(getIntent().getIntExtra("img", 0));
 
-        prot.setText("PROT\n" + getIntent().getIntExtra("prot", 0) + "g");
-        cal.setText("CAL\n" + getIntent().getIntExtra("cal", 0));
-        fat.setText("FAT\n" + getIntent().getIntExtra("fat", 0) + "g");
-        carb.setText("CARBS\n" + getIntent().getIntExtra("carb", 0) + "g");
+        prot.setText(getIntent().getIntExtra("prot", 0) + "g");
+        cal.setText(String.valueOf(getIntent().getIntExtra("cal", 0)));
+        fat.setText(getIntent().getIntExtra("fat", 0) + "g");
+        carb.setText(getIntent().getIntExtra("carb", 0) + "g");
 
         additionalInfo.setText(getIntent().getStringExtra("info"));
     }

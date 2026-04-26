@@ -3,11 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/bg_card_white_rounded"
-    android:padding="12dp"
-    android:layout_marginBottom="8dp"
-    android:gravity="center_vertical">
+    android:background="@drawable/bg_diary_item"
+    android:padding="16dp"
+    android:layout_marginBottom="12dp"
+    android:gravity="center_vertical"
+    android:clipToPadding="false"
+    android:elevation="2dp">
 
+    <!-- Icon -->
+    <LinearLayout
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_diary_icon"
+        android:gravity="center"
+        android:layout_marginEnd="16dp">
+
+        <TextView
+            android:id="@+id/tvEntryIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🍽️"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <!-- Details -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -15,42 +34,64 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tvEntryMealType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BREAKFAST"
+            android:textColor="@color/text_secondary"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:textAllCaps="true"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
             android:id="@+id/tvEntryName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Makanan"
-            android:textColor="@color/text_primary"
+            android:text="Avocado Toast"
+            android:textColor="@android:color/white"
             android:textSize="15sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/exo2_extrabold" />
+    </LinearLayout>
+
+    <!-- Calories on the Right -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginStart="8dp">
+
+        <TextView
+            android:id="@+id/tvEntryCalories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="420"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:fontFamily="@font/exo2_extrabold" />
 
         <TextView
-            android:id="@+id/tvEntryMealType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sarapan"
+            android:text="kcal"
             android:textColor="@color/text_secondary"
-            android:textSize="12sp" />
+            android:textSize="9sp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvEntryCalories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0 kkal"
-        android:textColor="#008B02"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/exo2_extrabold" />
-
+    <!-- Delete Button (Hidden visually but accessible) -->
     <ImageView
         android:id="@+id/btnDelete"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="14dp"
         android:src="@android:drawable/ic_menu_delete"
         android:contentDescription="Hapus"
         android:clickable="true"
-        android:focusable="true" />
+        android:focusable="true"
+        android:alpha="0.2" />
 
 </LinearLayout>

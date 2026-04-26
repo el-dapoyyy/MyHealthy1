@@ -35,29 +35,29 @@ public class WeightTrendView extends View {
 
     private void init() {
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        linePaint.setColor(0xFF008B02);
+        linePaint.setColor(0xFF00FF85);
         linePaint.setStrokeWidth(dp(3));
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeCap(Paint.Cap.ROUND);
         linePaint.setStrokeJoin(Paint.Join.ROUND);
 
         dotPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        dotPaint.setColor(0xFF008B02);
+        dotPaint.setColor(0xFF00FF85);
         dotPaint.setStyle(Paint.Style.FILL);
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setColor(0xFF333333);
+        textPaint.setColor(0xFFFFFFFF);
         textPaint.setTextSize(dp(10));
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setFakeBoldText(true);
 
         labelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        labelPaint.setColor(0xFF999999);
+        labelPaint.setColor(0xFFA9B5AC);
         labelPaint.setTextSize(dp(9));
         labelPaint.setTextAlign(Paint.Align.CENTER);
 
         gridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        gridPaint.setColor(0xFFE8E8E8);
+        gridPaint.setColor(0xFF0B3A1C);
         gridPaint.setStrokeWidth(dp(1));
     }
 

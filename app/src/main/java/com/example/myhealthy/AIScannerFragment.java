@@ -2,6 +2,7 @@ package com.example.myhealthy;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,13 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,14 +61,14 @@ public class AIScannerFragment extends Fragment {
 
     private ImageView ivFoodPhoto;
     private LinearLayout placeholderContainer, resultCard;
-    private ProgressBar progressAnalyzing;
+    private FrameLayout photoFrame;
+    private View loadingOverlay;
     private TextView tvScannerStatus, tvSource;
     private EditText etName, etCalories, etProtein, etCarbs, etFat;
     private Spinner spinnerMealType;
-    private CheckBox cbIsFried, cbIsSantan;
 
     private Bitmap capturedBitmap;
-    private final String[] MEAL_TYPES = {"Sarapan", "Makan Siang", "Makan Malam", "Snack"};
+    private final String[] MEAL_TYPES = {"Sarapan", "Makan Siang", "Makan Malam", "Snack", "Minuman"};
 
     @Nullable
     @Override
@@ -80,7 +80,8 @@ public class AIScannerFragment extends Fragment {
         ivFoodPhoto = view.findViewById(R.id.ivFoodPhoto);
         placeholderContainer = view.findViewById(R.id.placeholderContainer);
         resultCard = view.findViewById(R.id.resultCard);
-        progressAnalyzing = view.findViewById(R.id.progressAnalyzing);
+        photoFrame = view.findViewById(R.id.photoFrame);
+        loadingOverlay = view.findViewById(R.id.loadingOverlay);
         tvScannerStatus = view.findViewById(R.id.tvScannerStatus);
         tvSource = view.findViewById(R.id.tvSource);
         etName = view.findViewById(R.id.etResultName);
@@ -90,12 +91,19 @@ public class AIScannerFragment extends Fragment {
         etFat = view.findViewById(R.id.etResultFat);
         spinnerMealType = view.findViewById(R.id.spinnerMealType);
         
-        cbIsFried = view.findViewById(R.id.cbIsFried);
-        cbIsSantan = view.findViewById(R.id.cbIsSantan);
+        TextView btnBack = view.findViewById(R.id.btnBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> {
+                if (getActivity() instanceof MainNavActivity) {
+                    ((MainNavActivity) getActivity()).goBackToPreviousTab();
+                }
+            });
+        }
 
-        // Meal type spinner
+        // Meal type spinner — custom dark adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                requireContext(), android.R.layout.simple_spinner_dropdown_item, MEAL_TYPES);
+                requireContext(), R.layout.spinner_item_dark, MEAL_TYPES);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_dark);
         spinnerMealType.setAdapter(adapter);
 
         // Auto-select meal type based on time
@@ -105,22 +113,42 @@ public class AIScannerFragment extends Fragment {
         else if (hour < 20) spinnerMealType.setSelection(2);
         else spinnerMealType.setSelection(3);
 
-        // Status — check API key
-        String apiKey = BuildConfig.GEMINI_API_KEY;
-        if (apiKey != null && !apiKey.isEmpty()) {
-            tvScannerStatus.setText("⚡ Gemini AI Ready");
-            Log.d(TAG, "API Key loaded (length=" + apiKey.length() + ")");
-        } else {
-            tvScannerStatus.setText("⚠️ API Key belum diset");
-            Log.e(TAG, "GEMINI_API_KEY is empty! Check local.properties");
-        }
+        // Photo frame tap → show camera/gallery chooser
+        photoFrame.setOnClickListener(v -> showImageSourceChooser());
 
-        // Buttons
-        view.findViewById(R.id.btnCamera).setOnClickListener(v -> openCamera());
-        view.findViewById(R.id.btnGallery).setOnClickListener(v -> openGallery());
+        // Save button
         view.findViewById(R.id.btnSaveToDiary).setOnClickListener(v -> saveToDiary());
 
+        // Process Auto Start Intents from outside
+        if (getArguments() != null) {
+            if (getArguments().getBoolean("HAS_PENDING_BITMAP", false)) {
+                if (MainNavActivity.pendingScannerBitmap != null) {
+                    capturedBitmap = scaleBitmap(MainNavActivity.pendingScannerBitmap, 768);
+                    ivFoodPhoto.setImageBitmap(capturedBitmap);
+                    ivFoodPhoto.setVisibility(View.VISIBLE);
+                    placeholderContainer.setVisibility(View.GONE);
+                    MainNavActivity.pendingScannerBitmap = null;
+                    analyzeWithGemini(capturedBitmap);
+                }
+            }
+        }
+
         return view;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // IMAGE SOURCE CHOOSER (replaces separate buttons)
+    // ═══════════════════════════════════════════════════════
+
+    private void showImageSourceChooser() {
+        String[] options = {"📷  Kamera", "🖼️  Galeri"};
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Pilih Sumber Gambar")
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) openCamera();
+                    else openGallery();
+                })
+                .show();
     }
 
     // ═══════════════════════════════════════════════════════
@@ -173,7 +201,6 @@ public class AIScannerFragment extends Fragment {
             }
 
             if (capturedBitmap != null) {
-                // Scale bitmap to reduce payload size
                 capturedBitmap = scaleBitmap(capturedBitmap, 768);
                 Log.d(TAG, "Bitmap scaled: " + capturedBitmap.getWidth() + "x" + capturedBitmap.getHeight());
 
@@ -196,29 +223,24 @@ public class AIScannerFragment extends Fragment {
         String apiKey = BuildConfig.GEMINI_API_KEY;
         if (apiKey == null || apiKey.isEmpty()) {
             Toast.makeText(requireContext(), "API Key belum diset di local.properties", Toast.LENGTH_LONG).show();
-            Log.e(TAG, "Cannot call Gemini — API key is missing");
             return;
         }
 
-        // Show loading state
-        progressAnalyzing.setVisibility(View.VISIBLE);
+        // Show loading overlay
+        loadingOverlay.setVisibility(View.VISIBLE);
         resultCard.setVisibility(View.GONE);
-        tvScannerStatus.setText("🔄 Menganalisis makanan...");
 
         // Convert bitmap to Base64 JPEG
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 85, baos);
         byte[] imageBytes = baos.toByteArray();
         String base64Image = Base64.encodeToString(imageBytes, Base64.NO_WRAP);
-        Log.d(TAG, "Image encoded: " + imageBytes.length + " bytes, base64 length: " + base64Image.length());
+        Log.d(TAG, "Image encoded: " + imageBytes.length + " bytes");
 
-        // Background thread for network call
         new Thread(() -> {
             try {
                 String urlStr = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=" + apiKey;
                 Log.d(TAG, "Calling Gemini API...");
-
-                // ── Build request JSON ──────────────────────────────
 
                 // Image part
                 JSONObject inlineData = new JSONObject();
@@ -228,224 +250,192 @@ public class AIScannerFragment extends Fragment {
                 JSONObject imagePart = new JSONObject();
                 imagePart.put("inline_data", inlineData);
 
-            // HITL Check
-            String hitlInput = "";
-            if (cbIsFried != null && cbIsFried.isChecked()) {
-                hitlInput += "- PENGGUNA MENGONFIRMASI MAKANAN INI DIGORENG/BERMINYAK. Tambahkan nilai kalori dan lemak karena minyak goreng!\n";
-            }
-            if (cbIsSantan != null && cbIsSantan.isChecked()) {
-                hitlInput += "- PENGGUNA MENGONFIRMASI MAKANAN INI BERKUAH SANTAN/KACANG KENTAL. Tambahkan nilai kalori dan lemak!\n";
-            }
+                // Text prompt — pure AI analysis
+                JSONObject textPart = new JSONObject();
+                textPart.put("text",
+                        "Kamu adalah Ahli Gizi Profesional spesialis makanan Indonesia.\n" +
+                        "Tugas: Analisis foto makanan ini dan perkirakan nilai gizi per porsi yang terlihat.\n\n" +
+                        "INSTRUKSI AKURASI TINGGI:\n" +
+                        "1. Perhatikan porsi nyata (besar/kecil) dari benda di sekitarnya.\n" +
+                        "2. KALORI TERSEMBUNYI: Jika makanan terlihat mengkilap (digoreng/minyak) atau berkuah kental (santan/bumbu kacang), WAJIB tambahkan +50 hingga +150 kkal dari estimasi makanan rebus biasa.\n" +
+                        "3. Jangan abaikan kerupuk, kecap, atau sambal jika terlihat jelas.\n\n" +
+                        "SYARAT WAJIB OUTPUT JSON PURE:\n" +
+                        "- 'kalori' wajib integer murni.\n" +
+                        "- 'protein', 'karbohidrat', 'lemak' wajib desimal (contoh: 15.5) TANPA tulisan 'g' atau gram. WAJIB DIPERKIRAKAN 100%, JANGAN DIKOSONGKAN!\n" +
+                        "- Jika bukan makanan/kosong, kembalikan: {\"error\": \"Bukan makanan\"}\n\n" +
+                        "CONTOH REFERENSI AKURAT:\n" +
+                        "Nasi Goreng berminyak porsi normal:\n" +
+                        "{\"nama\": \"Nasi Goreng Spesial\", \"kalori\": 450, \"protein\": 14.5, \"karbohidrat\": 55.0, \"lemak\": 18.0}\n\n" +
+                        "Sate Ayam Bumbu Kacang (5 tusuk):\n" +
+                        "{\"nama\": \"Sate Ayam Bumbu Kacang\", \"kalori\": 250, \"protein\": 15.0, \"karbohidrat\": 12.0, \"lemak\": 16.5}\n\n" +
+                        "Berikan hasil JSON untuk gambar ini sekarang:");
 
-            // 1. Text prompt — intentionally strict (Advanced Prompt Engineering)
-            JSONObject textPart = new JSONObject();
-            textPart.put("text",
-                    "Kamu adalah Ahli Gizi Profesional spesialis makanan Indonesia.\n" +
-                    "Tugas: Analisis foto makanan ini dan perkirakan nilai gizi per porsi yang terlihat.\n\n" +
-                    "INFORMASI TAMBAHAN DARI PENGGUNA (Mutlak Diikuti):\n" +
-                    (hitlInput.isEmpty() ? "- (Tidak ada catatan khusus dari pengguna)\n" : hitlInput) +
-                    "\n" +
-                    "INSTRUKSI AKURASI TINGGI:\n" +
-                    "1. Perhatikan porsi nyata (besar/kecil) dari benda di sekitarnya.\n" +
-                    "2. KALORI TERSEMBUNYI: Jika makanan terlihat mengkilap (digoreng/minyak) atau berkuah kental (santan/bumbu kacang), WAJIB tambahkan +50 hingga +150 kkal dari estimasi makanan rebus biasa.\n" +
-                    "3. Jangan abaikan kerupuk, kecap, atau sambal jika terlihat jelas.\n\n" +
-                    "SYARAT WAJIB OUTPUT JSON PURE:\n" +
-                    "- 'kalori' wajib integer murni.\n" +
-                    "- 'protein', 'karbohidrat', 'lemak' wajib desimal (contoh: 15.5) TANPA tulisan 'g' atau gram. WAJIB DIPERKIRAKAN 100%, JANGAN DIKOSONGKAN!\n" +
-                    "- Jika bukan makanan/kosong, kembalikan: {\"error\": \"Bukan makanan\"}\n\n" +
-                    "CONTOH REFERENSI AKURAT (Berdasarkan Makanan Lokal):\n" +
-                    "Jika gambar Nasi Goreng berminyak porsi normal:\n" +
-                    "{\"nama\": \"Nasi Goreng Spesial\", \"kalori\": 450, \"protein\": 14.5, \"karbohidrat\": 55.0, \"lemak\": 18.0}\n\n" +
-                    "Jika melihat Sate Ayam Bumbu Kacang (5 tusuk):\n" +
-                    "{\"nama\": \"Sate Ayam Bumbu Kacang\", \"kalori\": 250, \"protein\": 15.0, \"karbohidrat\": 12.0, \"lemak\": 16.5}\n\n" +
-                    "Berikan hasil JSON untuk gambar ini sekarang:");
+                JSONArray parts = new JSONArray();
+                parts.put(imagePart);
+                parts.put(textPart);
 
-            // Contents array
-            JSONArray parts = new JSONArray();
-            parts.put(imagePart);
-            parts.put(textPart);
+                JSONObject content = new JSONObject();
+                content.put("parts", parts);
 
-            JSONObject content = new JSONObject();
-            content.put("parts", parts);
+                JSONArray contents = new JSONArray();
+                contents.put(content);
 
-            JSONArray contents = new JSONArray();
-            contents.put(content);
+                JSONObject generationConfig = new JSONObject();
+                generationConfig.put("responseMimeType", "application/json");
+                generationConfig.put("temperature", 0.2);
 
-            // Generation config
-            JSONObject generationConfig = new JSONObject();
-            generationConfig.put("responseMimeType", "application/json");
-            generationConfig.put("temperature", 0.2); // Lower temp for more strict analytical counting
+                JSONObject requestBody = new JSONObject();
+                requestBody.put("contents", contents);
+                requestBody.put("generationConfig", generationConfig);
 
-            // Final request body
-            JSONObject requestBody = new JSONObject();
-            requestBody.put("contents", contents);
-            requestBody.put("generationConfig", generationConfig);
+                // Send HTTP POST
+                URL url = new URL(urlStr);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setDoOutput(true);
+                conn.setConnectTimeout(30000);
+                conn.setReadTimeout(60000);
 
-            Log.d(TAG, "Request body built successfully");
+                OutputStream os = conn.getOutputStream();
+                os.write(requestBody.toString().getBytes("UTF-8"));
+                os.flush();
+                os.close();
 
-            // ── Send HTTP POST ──────────────────────────────────
+                int responseCode = conn.getResponseCode();
+                Log.d(TAG, "Response code: " + responseCode);
 
-            URL url = new URL(urlStr);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            conn.setDoOutput(true);
-            conn.setConnectTimeout(30000);
-            conn.setReadTimeout(60000); // Gemini can be slow with images
+                InputStream inputStream = (responseCode >= 200 && responseCode < 300)
+                        ? conn.getInputStream()
+                        : conn.getErrorStream();
 
-            OutputStream os = conn.getOutputStream();
-            os.write(requestBody.toString().getBytes("UTF-8"));
-            os.flush();
-            os.close();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) sb.append(line);
+                reader.close();
+                conn.disconnect();
 
-            int responseCode = conn.getResponseCode();
-            Log.d(TAG, "Response code: " + responseCode);
+                String responseStr = sb.toString();
+                Log.d(TAG, "Raw response: " + responseStr);
 
-            // Read response
-            InputStream inputStream = (responseCode >= 200 && responseCode < 300)
-                    ? conn.getInputStream()
-                    : conn.getErrorStream();
+                if (responseCode >= 200 && responseCode < 300) {
+                    JSONObject response = new JSONObject(responseStr);
+                    JSONArray candidates = response.optJSONArray("candidates");
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) sb.append(line);
-            reader.close();
-            conn.disconnect();
+                    if (candidates == null || candidates.length() == 0) {
+                        postToUI(() -> showError("Gemini tidak mengembalikan hasil."));
+                        return;
+                    }
 
-            String responseStr = sb.toString();
-            Log.d(TAG, "Raw response: " + responseStr);
+                    String text = candidates
+                            .getJSONObject(0)
+                            .getJSONObject("content")
+                            .getJSONArray("parts")
+                            .getJSONObject(0)
+                            .getString("text");
 
-            // ── Handle response ─────────────────────────────────
+                    Log.d(TAG, "Gemini text: " + text);
+                    postToUI(() -> parseAndShowResult(text));
 
-            if (responseCode >= 200 && responseCode < 300) {
-                // SUCCESS — extract text from Gemini response
-                JSONObject response = new JSONObject(responseStr);
-                JSONArray candidates = response.optJSONArray("candidates");
-
-                if (candidates == null || candidates.length() == 0) {
-                    postToUI(() -> showError("Gemini tidak mengembalikan hasil (mungkin safety filter)."));
-                    return;
+                } else {
+                    String errorMsg = "Error HTTP " + responseCode;
+                    try {
+                        JSONObject errObj = new JSONObject(responseStr).optJSONObject("error");
+                        if (errObj != null) errorMsg = errObj.optString("message", errorMsg);
+                    } catch (Exception ignored) {}
+                    String finalMsg = errorMsg;
+                    postToUI(() -> showError(finalMsg));
                 }
 
-                String text = candidates
-                        .getJSONObject(0)
-                        .getJSONObject("content")
-                        .getJSONArray("parts")
-                        .getJSONObject(0)
-                        .getString("text");
-
-                Log.d(TAG, "Gemini text: " + text);
-                postToUI(() -> parseAndShowResult(text));
-
-            } else {
-                // ERROR response from API
-                String errorMsg = "Error HTTP " + responseCode;
-                try {
-                    JSONObject errObj = new JSONObject(responseStr).optJSONObject("error");
-                    if (errObj != null) errorMsg = errObj.optString("message", errorMsg);
-                } catch (Exception ignored) {}
-                String finalMsg = errorMsg;
-                postToUI(() -> showError(finalMsg));
+            } catch (Exception e) {
+                Log.e(TAG, "Error calling Gemini", e);
+                postToUI(() -> showError("Error: " + e.getMessage()));
             }
-
-        } catch (Exception e) {
-            Log.e(TAG, "Error calling Gemini", e);
-            postToUI(() -> showError("Error: " + e.getMessage()));
-        }
-    }).start();
-}
-
-// ═══════════════════════════════════════════════════════
-// PARSE & DISPLAY RESULT
-// ═══════════════════════════════════════════════════════
-
-private double parseLenientMacro(JSONObject json, String key, String key2) {
-    try {
-        if (json.has(key)) {
-            Object val = json.opt(key);
-            if (val instanceof Number) return ((Number) val).doubleValue();
-            if (val instanceof String) return Double.parseDouble(val.toString().replaceAll("[^0-9.]", ""));
-        }
-        if (json.has(key2)) {
-            Object val = json.opt(key2);
-            if (val instanceof Number) return ((Number) val).doubleValue();
-            if (val instanceof String) return Double.parseDouble(val.toString().replaceAll("[^0-9.]", ""));
-        }
-    } catch (Exception e) {
-        Log.w(TAG, "Gagal memparsing makro: " + e.getMessage());
+        }).start();
     }
-    return 0.0;
-}
-
-private void parseAndShowResult(String text) {
-    progressAnalyzing.setVisibility(View.GONE);
-    tvScannerStatus.setText("⚡ Gemini AI Ready");
-
-    try {
-        String cleaned = text.trim();
-        cleaned = cleaned.replaceAll("^```(?:json)?\\s*", "");
-        cleaned = cleaned.replaceAll("\\s*```$", "");
-
-        JSONObject json;
-        try {
-            json = new JSONObject(cleaned);
-        } catch (Exception e) {
-            Matcher matcher = Pattern.compile("\\{[^{}]*\\}", Pattern.DOTALL).matcher(text);
-            if (matcher.find()) json = new JSONObject(matcher.group());
-            else throw new Exception("Tidak ditemukan JSON");
-        }
-
-        if (json.has("error")) {
-            Toast.makeText(requireContext(), "⚠️ " + json.getString("error"), Toast.LENGTH_LONG).show();
-            ivFoodPhoto.setVisibility(View.GONE);
-            placeholderContainer.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        String nama = json.optString("nama", "Tidak dikenali").trim();
-        
-        resultCard.setVisibility(View.VISIBLE);
-        tvSource.setText("⚡ via Gemini AI");
-        etName.setText(nama);
-        
-        // Calories
-        int calories = json.optInt("kalori", 0);
-        if (calories == 0) calories = json.optInt("calories", 0);
-        etCalories.setText(String.valueOf(calories));
-
-        // Macros
-        double pro = parseLenientMacro(json, "protein", "proteins");
-        double car = parseLenientMacro(json, "karbohidrat", "carbs");
-        double fat = parseLenientMacro(json, "lemak", "fat");
-
-        etProtein.setText(String.format(Locale.US, "%.1f", pro));
-        etCarbs.setText(String.format(Locale.US, "%.1f", car));
-        etFat.setText(String.format(Locale.US, "%.1f", fat));
-
-    } catch (Exception e) {
-        Log.e(TAG, "JSON parse error", e);
-        Toast.makeText(requireContext(), "⚠️ Gagal membaca hasil analisis.", Toast.LENGTH_LONG).show();
-    }
-}
 
     // ═══════════════════════════════════════════════════════
-    // ERROR HANDLING HELPER
+    // PARSE & DISPLAY RESULT (Pure AI — no local DB)
+    // ═══════════════════════════════════════════════════════
+
+    private double parseLenientMacro(JSONObject json, String key, String key2) {
+        try {
+            if (json.has(key)) {
+                Object val = json.opt(key);
+                if (val instanceof Number) return ((Number) val).doubleValue();
+                if (val instanceof String) return Double.parseDouble(val.toString().replaceAll("[^0-9.]", ""));
+            }
+            if (json.has(key2)) {
+                Object val = json.opt(key2);
+                if (val instanceof Number) return ((Number) val).doubleValue();
+                if (val instanceof String) return Double.parseDouble(val.toString().replaceAll("[^0-9.]", ""));
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Gagal memparsing makro: " + e.getMessage());
+        }
+        return 0.0;
+    }
+
+    private void parseAndShowResult(String text) {
+        loadingOverlay.setVisibility(View.GONE);
+
+        try {
+            String cleaned = text.trim();
+            cleaned = cleaned.replaceAll("^```(?:json)?\\s*", "");
+            cleaned = cleaned.replaceAll("\\s*```$", "");
+
+            JSONObject json;
+            try {
+                json = new JSONObject(cleaned);
+            } catch (Exception e) {
+                Matcher matcher = Pattern.compile("\\{[^{}]*\\}", Pattern.DOTALL).matcher(text);
+                if (matcher.find()) json = new JSONObject(matcher.group());
+                else throw new Exception("Tidak ditemukan JSON");
+            }
+
+            if (json.has("error")) {
+                Toast.makeText(requireContext(), "⚠️ " + json.getString("error"), Toast.LENGTH_LONG).show();
+                ivFoodPhoto.setVisibility(View.GONE);
+                placeholderContainer.setVisibility(View.VISIBLE);
+                return;
+            }
+
+            // Pure AI results — no local database lookup
+            String nama = json.optString("nama", "Tidak dikenali").trim();
+            int calories = json.optInt("kalori", 0);
+            if (calories == 0) calories = json.optInt("calories", 0);
+
+            double pro = parseLenientMacro(json, "protein", "proteins");
+            double carbs = parseLenientMacro(json, "karbohidrat", "carbs");
+            double fat = parseLenientMacro(json, "lemak", "fat");
+
+            resultCard.setVisibility(View.VISIBLE);
+            tvSource.setText("✨ Powered by AI");
+            etName.setText(nama);
+            etCalories.setText(String.valueOf(calories));
+            etProtein.setText(String.format(Locale.US, "%.1f", pro));
+            etCarbs.setText(String.format(Locale.US, "%.1f", carbs));
+            etFat.setText(String.format(Locale.US, "%.1f", fat));
+
+        } catch (Exception e) {
+            Log.e(TAG, "JSON parse error", e);
+            Toast.makeText(requireContext(), "⚠️ Gagal membaca hasil analisis.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // ERROR HANDLING
     // ═══════════════════════════════════════════════════════
 
     private void showError(String message) {
-        progressAnalyzing.setVisibility(View.GONE);
-        tvScannerStatus.setText("⚡ Gemini AI Ready");
+        loadingOverlay.setVisibility(View.GONE);
         Toast.makeText(requireContext(), "❌ " + message, Toast.LENGTH_LONG).show();
     }
 
-    /**
-     * Safely post a Runnable to the UI thread, only if the fragment is still attached.
-     */
     private void postToUI(Runnable action) {
         if (isAdded() && getActivity() != null) {
             requireActivity().runOnUiThread(() -> {
-                // Double-check after posting to main thread
                 if (isAdded()) {
                     action.run();
                 }

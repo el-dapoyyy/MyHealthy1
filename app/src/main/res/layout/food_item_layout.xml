@@ -3,57 +3,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="6dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp"
-    app:cardUseCompatPadding="true"
-    app:cardBackgroundColor="#008B02">
+    app:cardBackgroundColor="@color/card_gray">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="12dp">
+        android:layout_height="wrap_content">
 
-        <!-- FOTO: persegi + rounded -->
+        <!-- FOTO penuh di Top Card -->
         <ImageView
             android:id="@+id/foodImage"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:background="@drawable/bg_food_image_rounded"
-            android:clipToOutline="true"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/default_image" />
+            android:src="@drawable/default_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- NAMA: putih + font Exo2 -->
-        <TextView
-            android:id="@+id/foodName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="Nama Makanan"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/exo2_semibold" />
-
-        <!-- RATING (biar kontras, putih juga) -->
+        <!-- Rating Bintang mengapung di atas gambar -->
         <TextView
             android:id="@+id/tvRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="⭐ 5.0/5.0"
-            android:textSize="11sp"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/exo2_regular" />
+            android:background="#99001204"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="3dp"
+            android:text="⭐ 4.9"
+            android:textSize="10sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@id/foodImage">
 
+            <TextView
+                android:id="@+id/foodName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Dada Ayam"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

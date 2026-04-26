@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,12 +39,20 @@ public class ProfileFragment extends Fragment {
     private static final int[] LEVEL_XP = {0, 100, 300, 600, 1000, 1500};
     private static final String[] LEVEL_NAMES = {"Pemula", "Starter", "Explorer", "Warrior", "Master", "Legend"};
 
-    private TextView tvProfileName, tvProfileEmail, tvInitials;
-    private TextView tvInfoName, tvInfoEmail, tvInfoProvider;
-    private TextView tvHealthWeight, tvHealthHeight, tvHealthBmi, tvHealthCalTarget;
-    private TextView tvStatsLevel, tvStatsStreak, tvStatsXp, tvStatsBadges;
+    // Header views
+    private TextView tvProfileName, tvProfileEmail, tvProfileSubtitle, tvInitials, tvLevelBadge;
     private ImageView ivProfilePhoto;
     private FrameLayout flInitials;
+
+    // Account info views
+    private TextView tvInfoName, tvInfoEmail, tvInfoProvider;
+
+    // Vitals views
+    private TextView tvHealthWeight, tvHealthHeight, tvHealthBmi, tvBmiCategory, tvAge, tvHealthCalTarget;
+
+    // Gamification views
+    private TextView tvStatsLevel, tvXpToNext, tvStatsStreak, tvStatsXp, tvStatsBadges;
+    private ProgressBar xpLevelProgress;
 
     private FirebaseUser user;
 
@@ -54,26 +63,35 @@ public class ProfileFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // Bind views
+        // Bind header views
         tvProfileName = view.findViewById(R.id.tvProfileName);
         tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
+        tvProfileSubtitle = view.findViewById(R.id.tvProfileSubtitle);
+        tvLevelBadge = view.findViewById(R.id.tvLevelBadge);
         tvInitials = view.findViewById(R.id.tvInitials);
         ivProfilePhoto = view.findViewById(R.id.ivProfilePhoto);
         flInitials = view.findViewById(R.id.flInitials);
 
+        // Bind account info views
         tvInfoName = view.findViewById(R.id.tvInfoName);
         tvInfoEmail = view.findViewById(R.id.tvInfoEmail);
         tvInfoProvider = view.findViewById(R.id.tvInfoProvider);
 
+        // Bind vitals views
         tvHealthWeight = view.findViewById(R.id.tvHealthWeight);
         tvHealthHeight = view.findViewById(R.id.tvHealthHeight);
         tvHealthBmi = view.findViewById(R.id.tvHealthBmi);
+        tvBmiCategory = view.findViewById(R.id.tvBmiCategory);
+        tvAge = view.findViewById(R.id.tvAge);
         tvHealthCalTarget = view.findViewById(R.id.tvHealthCalTarget);
 
+        // Bind gamification views
         tvStatsLevel = view.findViewById(R.id.tvStatsLevel);
+        tvXpToNext = view.findViewById(R.id.tvXpToNext);
         tvStatsStreak = view.findViewById(R.id.tvStatsStreak);
         tvStatsXp = view.findViewById(R.id.tvStatsXp);
         tvStatsBadges = view.findViewById(R.id.tvStatsBadges);
+        xpLevelProgress = view.findViewById(R.id.xpLevelProgress);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -88,6 +106,16 @@ public class ProfileFragment extends Fragment {
 
         // Edit profile button
         view.findViewById(R.id.btnEditProfile).setOnClickListener(v -> showEditNameDialog());
+
+        // Edit data button -> same as edit name for now (opens calculator)
+        view.findViewById(R.id.btnEditData).setOnClickListener(v -> {
+            // Navigate to calculator tab
+            if (getActivity() instanceof MainNavActivity) {
+                com.google.android.material.bottomnavigation.BottomNavigationView bnv =
+                        getActivity().findViewById(R.id.bottom_nav);
+                if (bnv != null) bnv.setSelectedItemId(R.id.nav_calculator);
+            }
+        });
 
         // Logout button
         view.findViewById(R.id.btnLogout).setOnClickListener(v -> {
@@ -161,6 +189,10 @@ public class ProfileFragment extends Fragment {
         String weightStr = pref.getString("weight", null);
         String heightStr = pref.getString("height", null);
 
+        // Load age
+        int age = getIntPref(pref, "age", 0);
+        tvAge.setText(age > 0 ? String.valueOf(age) : "-");
+
         if (weightStr != null && heightStr != null) {
             try {
                 double weight = Double.parseDouble(weightStr);
@@ -168,22 +200,23 @@ public class ProfileFragment extends Fragment {
                 double bmi = weight / Math.pow(height / 100.0, 2);
 
                 String cat;
-                if (bmi < 18.5) cat = "Kurus";
-                else if (bmi < 24.9) cat = "Normal";
-                else if (bmi < 29.9) cat = "Gemuk";
-                else cat = "Obesitas";
+                if (bmi < 18.5) cat = "UNDERWEIGHT";
+                else if (bmi < 24.9) cat = "NORMAL";
+                else if (bmi < 29.9) cat = "OVERWEIGHT";
+                else cat = "OBESE";
 
-                tvHealthWeight.setText(String.format(Locale.US, "%.1f kg", weight));
-                tvHealthHeight.setText(String.format(Locale.US, "%.0f cm", height));
-                tvHealthBmi.setText(String.format(Locale.US, "%.1f (%s)", bmi, cat));
+                tvHealthWeight.setText(String.format(Locale.US, "%.1f", weight));
+                tvHealthHeight.setText(String.format(Locale.US, "%.0f", height));
+                tvHealthBmi.setText(String.format(Locale.US, "%.1f", bmi));
+                tvBmiCategory.setText(" " + cat);
 
                 // Calculate target calories
                 int genderPos = getIntPref(pref, "gender_pos", 0);
-                int age = getIntPref(pref, "age", 25);
                 boolean isMale = genderPos == 0;
+                int ageCalc = age > 0 ? age : 25;
                 double bmr = isMale
-                        ? (10 * weight) + (6.25 * height) - (5 * age) + 5
-                        : (10 * weight) + (6.25 * height) - (5 * age) - 161;
+                        ? (10 * weight) + (6.25 * height) - (5 * ageCalc) + 5
+                        : (10 * weight) + (6.25 * height) - (5 * ageCalc) - 161;
 
                 String[] actVals = getResources().getStringArray(R.array.activity_levels_values);
                 int actPos = getIntPref(pref, "activity_pos", 0);
@@ -200,10 +233,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setHealthEmpty() {
-        tvHealthWeight.setText("Belum diisi");
-        tvHealthHeight.setText("Belum diisi");
-        tvHealthBmi.setText("Belum diisi");
-        tvHealthCalTarget.setText("Gunakan Kalkulator");
+        tvHealthWeight.setText("-");
+        tvHealthHeight.setText("-");
+        tvHealthBmi.setText("-");
+        tvBmiCategory.setText("");
+        tvHealthCalTarget.setText("Use Calculator");
     }
 
     private int getIntPref(SharedPreferences pref, String key, int def) {
@@ -228,6 +262,7 @@ public class ProfileFragment extends Fragment {
                 .collection("progress").document(todayStr)
                 .get()
                 .addOnSuccessListener(doc -> {
+                    if (!isAdded() || getContext() == null) return;
                     if (doc.exists()) {
                         // XP
                         Long xp = doc.getLong("xp");
@@ -243,24 +278,46 @@ public class ProfileFragment extends Fragment {
                             }
                         }
                         String levelName = level <= LEVEL_NAMES.length ? LEVEL_NAMES[level - 1] : "Legend";
-                        tvStatsLevel.setText("Lv." + level + " " + levelName);
+                        tvStatsLevel.setText(String.valueOf(level));
+                        tvLevelBadge.setText(levelName.toUpperCase());
+
+                        // Subtitle
+                        tvProfileSubtitle.setText("ELITE RUNNER • " + levelName.toUpperCase() + " LEVEL " + level);
+
+                        // XP progress to next level
+                        int currentLevelXp = LEVEL_XP[Math.min(level - 1, LEVEL_XP.length - 1)];
+                        int nextLevelXp = level < LEVEL_XP.length ? LEVEL_XP[level] : LEVEL_XP[LEVEL_XP.length - 1] + 500;
+                        int xpInLevel = totalXp - currentLevelXp;
+                        int xpNeeded = nextLevelXp - currentLevelXp;
+                        int nextLevel = level + 1;
+
+                        xpLevelProgress.setMax(xpNeeded);
+                        xpLevelProgress.setProgress(Math.min(xpInLevel, xpNeeded));
+                        tvXpToNext.setText((nextLevelXp - totalXp) + " XP TO " + nextLevel);
 
                         // Streak
                         Long streak = doc.getLong("streak");
-                        tvStatsStreak.setText((streak != null ? streak.intValue() : 0) + " Hari");
+                        int streakVal = streak != null ? streak.intValue() : 0;
+                        tvStatsStreak.setText(String.valueOf(streakVal));
 
                         // Badges
                         List<String> badges = (List<String>) doc.get("badges");
                         int badgeCount = badges != null ? badges.size() : 0;
-                        tvStatsBadges.setText(badgeCount + "/6 diraih");
+                        tvStatsBadges.setText(badgeCount + "/6");
                     } else {
-                        tvStatsLevel.setText("Lv.1 Pemula");
-                        tvStatsStreak.setText("0 Hari");
+                        tvStatsLevel.setText("1");
+                        tvStatsStreak.setText("0");
                         tvStatsXp.setText("0 XP");
-                        tvStatsBadges.setText("0/6 diraih");
+                        tvStatsBadges.setText("0/6");
+                        tvXpToNext.setText("100 XP TO 2");
+                        tvLevelBadge.setText("PEMULA");
+                        tvProfileSubtitle.setText("ELITE RUNNER • PEMULA LEVEL 1");
+                        xpLevelProgress.setMax(100);
+                        xpLevelProgress.setProgress(0);
                     }
                 })
                 .addOnFailureListener(e -> {
+                    if (!isAdded() || getContext() == null) return;
                     tvStatsLevel.setText("-");
                     tvStatsStreak.setText("-");
                     tvStatsXp.setText("-");
@@ -318,30 +375,12 @@ public class ProfileFragment extends Fragment {
     private void showDeleteAccountDialog() {
         new AlertDialog.Builder(requireContext())
                 .setTitle("⚠️ Hapus Akun")
-                .setMessage("Apakah kamu yakin ingin menghapus akun? Semua data akan hilang dan tidak bisa dikembalikan.")
-                .setPositiveButton("Hapus", (dialog, which) -> {
-                    // Second confirmation
-                    new AlertDialog.Builder(requireContext())
-                            .setTitle("Konfirmasi Terakhir")
-                            .setMessage("Ketik HAPUS untuk mengonfirmasi penghapusan akun.")
-                            .setView(createConfirmInput())
-                            .setPositiveButton("Konfirmasi", (d2, w2) -> {
-                                EditText confirmInput = (EditText) ((AlertDialog) d2).findViewById(android.R.id.custom);
-                                // Proceed with deletion regardless (the dialog is enough confirmation)
-                                deleteAccount();
-                            })
-                            .setNegativeButton("Batal", null)
-                            .show();
+                .setMessage("Apakah kamu yakin ingin menghapus akun? Semua data akan hilang di data center dan tidak bisa dikembalikan.")
+                .setPositiveButton("Ya", (dialog, which) -> {
+                    deleteAccount();
                 })
-                .setNegativeButton("Batal", null)
+                .setNegativeButton("Tidak", null)
                 .show();
-    }
-
-    private EditText createConfirmInput() {
-        EditText input = new EditText(requireContext());
-        input.setHint("Ketik HAPUS");
-        input.setPadding(dp(16), dp(12), dp(16), dp(12));
-        return input;
     }
 
     private void deleteAccount() {

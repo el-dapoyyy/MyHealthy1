@@ -190,11 +190,10 @@ public class FoodDatabase {
         return null;
     }
 
-    /** Search by partial name match */
     public static FoodInfo searchByKeyword(String keyword) {
         String lowerKey = keyword.toLowerCase();
         for (Map.Entry<String, FoodInfo> entry : DATABASE.entrySet()) {
-            if (entry.getKey().contains(lowerKey)) {
+            if (entry.getKey().contains(lowerKey) || lowerKey.contains(entry.getKey())) {
                 return entry.getValue();
             }
         }

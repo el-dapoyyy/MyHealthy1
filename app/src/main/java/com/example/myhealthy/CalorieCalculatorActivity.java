@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 import java.util.Locale;
 
 public class CalorieCalculatorActivity extends AppCompatActivity {
@@ -28,14 +31,20 @@ public class CalorieCalculatorActivity extends AppCompatActivity {
     private Spinner spinnerGender, spinnerActivity, spinnerGoal;
 
     // MODIFIKASI: Menambahkan variabel untuk TextView BMI
+    // MODIFIKASI: Menambahkan variabel untuk TextView BMI
     private TextView tvBmiResult;
-
     private TextView tvCalorieResult, tvResultDesc;
+
     private TextView tvMacroProtein, tvMacroCarb, tvMacroFat;
+    private View barProtein, barCarb, barFat;
+    private android.widget.SeekBar seekBarHeight;
+    private TextView tvLastUpdated;
     private Button btnCalculate;
     private TextView btnBack;
 
     private enum Goal { MAINTAIN, CUT, BULK }
+
+    private static final String K_LAST_UPDATED = "last_updated";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,7 @@ public class CalorieCalculatorActivity extends AppCompatActivity {
 
         initViews();
         setupSpinners();
+        setupHeightSlider();
         loadSavedData();
 
         btnBack.setOnClickListener(v -> finish());
@@ -66,6 +76,14 @@ public class CalorieCalculatorActivity extends AppCompatActivity {
         tvMacroProtein = findViewById(R.id.tvMacroProtein);
         tvMacroCarb = findViewById(R.id.tvMacroCarb);
         tvMacroFat = findViewById(R.id.tvMacroFat);
+        
+        barProtein = findViewById(R.id.barProtein);
+        barCarb = findViewById(R.id.barCarb);
+        barFat = findViewById(R.id.barFat);
+        
+        seekBarHeight = findViewById(R.id.seekBarHeight);
+        tvLastUpdated = findViewById(R.id.tvLastUpdated);
+        
         btnCalculate = findViewById(R.id.btnCalculate);
         btnBack = findViewById(R.id.btnBack);
     }
@@ -88,6 +106,45 @@ public class CalorieCalculatorActivity extends AppCompatActivity {
                 R.array.goal_labels, android.R.layout.simple_spinner_item);
         goalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGoal.setAdapter(goalAdapter);
+    }
+
+    private void setupHeightSlider() {
+        if (seekBarHeight == null || etHeight == null) return;
+        
+        seekBarHeight.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    etHeight.setText(String.valueOf(progress));
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(android.widget.SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(android.widget.SeekBar seekBar) {}
+        });
+
+        etHeight.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                if (!TextUtils.isEmpty(s)) {
+                    try {
+                        int height = (int) Double.parseDouble(s.toString());
+                        if (height >= 0 && height <= 250) {
+                            seekBarHeight.setProgress(height);
+                        }
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+        });
     }
 
     private void handleCalculate() {
@@ -161,11 +218,48 @@ public class CalorieCalculatorActivity extends AppCompatActivity {
         tvMacroProtein.setText(String.format(Locale.US, "Protein: %.1f g", mt.proteinG));
         tvMacroCarb.setText(String.format(Locale.US, "Karbo: %.1f g", mt.carbG));
         tvMacroFat.setText(String.format(Locale.US, "Lemak: %.1f g", mt.fatG));
+        
+        updateMacroBars(mt.proteinG, mt.carbG, mt.fatG);
 
-        saveData(age, height, weight);
+        long timestamp = System.currentTimeMillis();
+        saveData(age, height, weight, timestamp, targetCalories);
+        updateLastUpdatedText(timestamp);
+    }
+    
+    private void updateMacroBars(double p, double c, double f) {
+        double total = p + c + f;
+        if (total <= 0) return;
+        
+        // Asumsi max bar width = 180dp (bisa disesuaikan proporsinya)
+        int maxDp = 180;
+        float density = getResources().getDisplayMetrics().density;
+        
+        int pWidth = (int) ((p / total) * maxDp * density);
+        int cWidth = (int) ((c / total) * maxDp * density);
+        int fWidth = (int) ((f / total) * maxDp * density);
+        
+        setBarWidth(barProtein, pWidth);
+        setBarWidth(barCarb, cWidth);
+        setBarWidth(barFat, fWidth);
+    }
+    
+    private void setBarWidth(android.view.View bar, int widthPx) {
+        if (bar != null) {
+            android.view.ViewGroup.LayoutParams params = bar.getLayoutParams();
+            params.width = Math.max(widthPx, (int)(10 * getResources().getDisplayMetrics().density)); // min 10dp
+            bar.setLayoutParams(params);
+        }
+    }
+    
+    private void updateLastUpdatedText(long timestamp) {
+        if (tvLastUpdated != null && timestamp > 0) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault());
+            String dateStr = sdf.format(new java.util.Date(timestamp));
+            tvLastUpdated.setText("LAST CALCULATED: " + dateStr.toUpperCase());
+        }
     }
 
-    private void saveData(int age, double height, double weight) {
+    private void saveData(int age, double height, double weight, long timestamp, double targetCalories) {
         SharedPreferences pref = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         pref.edit()
                 .putString(K_GENDER_POS, String.valueOf(spinnerGender.getSelectedItemPosition()))
@@ -174,6 +268,8 @@ public class CalorieCalculatorActivity extends AppCompatActivity {
                 .putString(K_WEIGHT, String.valueOf(weight))
                 .putString(K_ACTIVITY_POS, String.valueOf(spinnerActivity.getSelectedItemPosition()))
                 .putString(K_GOAL_POS, String.valueOf(spinnerGoal.getSelectedItemPosition()))
+                .putLong(K_LAST_UPDATED, timestamp)
+                .putInt("target_calories", (int) targetCalories)
                 .apply();
     }
 
@@ -187,13 +283,41 @@ public class CalorieCalculatorActivity extends AppCompatActivity {
         double weight = getDoubleSafely(pref, K_WEIGHT, 0.0);
         int activityPos = getIntSafely(pref, K_ACTIVITY_POS, 0);
         int goalPos = getIntSafely(pref, K_GOAL_POS, 0);
+        long lastUpdated = pref.getLong(K_LAST_UPDATED, 0);
 
         spinnerGender.setSelection(genderPos);
         if (age > 0) etAge.setText(String.valueOf(age));
-        if (height > 0) etHeight.setText(String.valueOf(height));
+        if (height > 0) {
+            etHeight.setText(String.valueOf(height));
+            if (seekBarHeight != null) seekBarHeight.setProgress((int)height);
+        }
         if (weight > 0) etWeight.setText(String.valueOf(weight));
         spinnerActivity.setSelection(activityPos);
         spinnerGoal.setSelection(goalPos);
+        
+        if (lastUpdated > 0) {
+            updateLastUpdatedText(lastUpdated);
+            
+            // Recompute macros to set bar width if there's saved data
+            boolean isMale = (genderPos == 0);
+            double bmr;
+            if (isMale) {
+                bmr = (10.0 * weight) + (6.25 * height) - (5.0 * age) + 5.0;
+            } else {
+                bmr = (10.0 * weight) + (6.25 * height) - (5.0 * age) - 161.0;
+            }
+            String[] activityValues = getResources().getStringArray(R.array.activity_levels_values);
+            double activityFactor = Double.parseDouble(activityValues[activityPos]);
+            double tdee = bmr * activityFactor;
+            
+            String[] goalValues = getResources().getStringArray(R.array.goal_values);
+            String selectedGoalKey = goalValues[goalPos];
+            Goal goal = mapGoal(selectedGoalKey);
+            double targetCalories = applyGoalAdjustment(tdee, goal, isMale);
+            
+            MacroTarget mt = computeMacroTargets(weight, targetCalories, goal);
+            updateMacroBars(mt.proteinG, mt.carbG, mt.fatG);
+        }
     }
 
     // Metode bantu untuk mengambil integer dari SharedPreferences dengan penanganan kesalahan

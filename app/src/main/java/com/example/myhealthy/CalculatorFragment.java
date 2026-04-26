@@ -34,8 +34,13 @@ public class CalculatorFragment extends Fragment {
     private Spinner spinnerGender, spinnerActivity, spinnerGoal;
     private TextView tvBmiResult, tvCalorieResult, tvResultDesc;
     private TextView tvMacroProtein, tvMacroCarb, tvMacroFat;
+    private View barProtein, barCarb, barFat;
+    private android.widget.SeekBar seekBarHeight;
+    private TextView tvLastUpdated;
 
     private enum Goal { MAINTAIN, CUT, BULK }
+
+    private static final String K_LAST_UPDATED = "last_updated";
 
     @Nullable
     @Override
@@ -56,9 +61,18 @@ public class CalculatorFragment extends Fragment {
         tvMacroProtein = view.findViewById(R.id.tvMacroProtein);
         tvMacroCarb = view.findViewById(R.id.tvMacroCarb);
         tvMacroFat = view.findViewById(R.id.tvMacroFat);
+        
+        barProtein = view.findViewById(R.id.barProtein);
+        barCarb = view.findViewById(R.id.barCarb);
+        barFat = view.findViewById(R.id.barFat);
+        
+        seekBarHeight = view.findViewById(R.id.seekBarHeight);
+        tvLastUpdated = view.findViewById(R.id.tvLastUpdated);
+        
         Button btnCalculate = view.findViewById(R.id.btnCalculate);
 
         setupSpinners();
+        setupHeightSlider();
         loadSavedData();
 
         btnCalculate.setOnClickListener(v -> handleCalculate());
@@ -80,6 +94,43 @@ public class CalculatorFragment extends Fragment {
                 R.array.goal_labels, android.R.layout.simple_spinner_item);
         goalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGoal.setAdapter(goalAdapter);
+    }
+
+    private void setupHeightSlider() {
+        seekBarHeight.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    etHeight.setText(String.valueOf(progress));
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(android.widget.SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(android.widget.SeekBar seekBar) {}
+        });
+
+        etHeight.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                if (!TextUtils.isEmpty(s)) {
+                    try {
+                        int height = (int) Double.parseDouble(s.toString());
+                        if (height >= 0 && height <= 250) {
+                            seekBarHeight.setProgress(height);
+                        }
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+        });
     }
 
     private void handleCalculate() {
@@ -140,11 +191,48 @@ public class CalculatorFragment extends Fragment {
         tvMacroProtein.setText(String.format(Locale.US, "Protein: %.1f g", proteinG));
         tvMacroCarb.setText(String.format(Locale.US, "Karbo: %.1f g", carbG));
         tvMacroFat.setText(String.format(Locale.US, "Lemak: %.1f g", fatG));
+        
+        updateMacroBars(proteinG, carbG, fatG);
 
-        saveData(age, height, weight);
+        long timestamp = System.currentTimeMillis();
+        saveData(age, height, weight, timestamp);
+        updateLastUpdatedText(timestamp);
     }
 
-    private void saveData(int age, double height, double weight) {
+    private void updateMacroBars(double p, double c, double f) {
+        double total = p + c + f;
+        if (total <= 0) return;
+        
+        // Asumsi max bar width = 180dp (bisa disesuaikan proporsinya)
+        int maxDp = 180;
+        float density = getResources().getDisplayMetrics().density;
+        
+        int pWidth = (int) ((p / total) * maxDp * density);
+        int cWidth = (int) ((c / total) * maxDp * density);
+        int fWidth = (int) ((f / total) * maxDp * density);
+        
+        setBarWidth(barProtein, pWidth);
+        setBarWidth(barCarb, cWidth);
+        setBarWidth(barFat, fWidth);
+    }
+    
+    private void setBarWidth(View bar, int widthPx) {
+        if (bar != null) {
+            ViewGroup.LayoutParams params = bar.getLayoutParams();
+            params.width = Math.max(widthPx, (int)(10 * getResources().getDisplayMetrics().density)); // min 10dp
+            bar.setLayoutParams(params);
+        }
+    }
+    
+    private void updateLastUpdatedText(long timestamp) {
+        if (tvLastUpdated != null && timestamp > 0) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault());
+            String dateStr = sdf.format(new java.util.Date(timestamp));
+            tvLastUpdated.setText("LAST CALCULATED: " + dateStr.toUpperCase());
+        }
+    }
+
+    private void saveData(int age, double height, double weight, long timestamp) {
         SharedPreferences pref = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         pref.edit()
                 .putString(K_GENDER_POS, String.valueOf(spinnerGender.getSelectedItemPosition()))
@@ -153,6 +241,7 @@ public class CalculatorFragment extends Fragment {
                 .putString(K_WEIGHT, String.valueOf(weight))
                 .putString(K_ACTIVITY_POS, String.valueOf(spinnerActivity.getSelectedItemPosition()))
                 .putString(K_GOAL_POS, String.valueOf(spinnerGoal.getSelectedItemPosition()))
+                .putLong(K_LAST_UPDATED, timestamp)
                 .apply();
     }
 
@@ -164,13 +253,45 @@ public class CalculatorFragment extends Fragment {
         double weight = getDoubleSafely(pref, K_WEIGHT, 0.0);
         int activityPos = getIntSafely(pref, K_ACTIVITY_POS, 0);
         int goalPos = getIntSafely(pref, K_GOAL_POS, 0);
+        long lastUpdated = pref.getLong(K_LAST_UPDATED, 0);
 
         spinnerGender.setSelection(genderPos);
         if (age > 0) etAge.setText(String.valueOf(age));
-        if (height > 0) etHeight.setText(String.valueOf(height));
+        if (height > 0) {
+            etHeight.setText(String.valueOf(height));
+            seekBarHeight.setProgress((int)height);
+        }
         if (weight > 0) etWeight.setText(String.valueOf(weight));
         spinnerActivity.setSelection(activityPos);
         spinnerGoal.setSelection(goalPos);
+        
+        if (lastUpdated > 0) {
+            updateLastUpdatedText(lastUpdated);
+            // Optional: Recompute macros if data exists to refill bars
+            boolean isMale = (genderPos == 0);
+            double bmr;
+            if (isMale) {
+                bmr = (10.0 * weight) + (6.25 * height) - (5.0 * age) + 5.0;
+            } else {
+                bmr = (10.0 * weight) + (6.25 * height) - (5.0 * age) - 161.0;
+            }
+            String[] activityValues = getResources().getStringArray(R.array.activity_levels_values);
+            double activityFactor = Double.parseDouble(activityValues[activityPos]);
+            double tdee = bmr * activityFactor;
+            
+            String[] goalValues = getResources().getStringArray(R.array.goal_values);
+            String selectedGoalKey = goalValues[goalPos];
+            Goal goal = mapGoal(selectedGoalKey);
+            double targetCalories = applyGoalAdjustment(tdee, goal, isMale);
+            
+            double pPerKg = (goal == Goal.CUT) ? 1.8 : 1.6;
+            double fPerKg = (goal == Goal.CUT) ? 0.8 : (goal == Goal.BULK ? 1.0 : 0.9);
+            double proteinG = weight * pPerKg;
+            double fatG = weight * fPerKg;
+            double carbG = Math.max(0, (targetCalories - proteinG * 4 - fatG * 9) / 4);
+            
+            updateMacroBars(proteinG, carbG, fatG);
+        }
     }
 
     private int getIntSafely(SharedPreferences pref, String key, int defaultValue) {

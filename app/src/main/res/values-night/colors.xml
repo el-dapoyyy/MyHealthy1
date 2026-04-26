@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="healthy_green">#2E7D32</color>
-    <color name="star_yellow">#FFD700</color>
+    <!-- Night mode uses the same Neon Wellness palette (always dark theme) -->
+    <color name="neon_primary">#00FF85</color>
+    <color name="neon_accent">#5CFD80</color>
+    <color name="neon_glow_10">#1A00FF85</color>
+    <color name="neon_glow_20">#3300FF85</color>
+    <color name="neon_glow_30">#4D00FF85</color>
+
+    <color name="healthy_green">@color/neon_primary</color>
+    <color name="healthy_green_secondary">@color/neon_accent</color>
+    <color name="star_yellow">@color/neon_primary</color>
+
+    <color name="bg_main">#001204</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#A9B5AC</color>
+    <color name="text_inverse">#001204</color>
+    <color name="bg_gray_box">#052310</color>
+    <color name="card_gray">#052310</color>
+    <color name="card_border">#0B3A1C</color>
+    <color name="green_checked">@color/neon_primary</color>
+    <color name="green_unchecked">#021207</color>
+    <color name="input_bg">#031B0B</color>
+    <color name="input_border">#093D1C</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
-    <color name="bg_main">#121212</color>
-    <color name="text_primary">#E0E0E0</color>
-    <color name="bg_gray_box">#1E1E1E</color>
-    <color name="text_inverse">#E0E0E0</color>
-
-    <color name="card_gray">#1E1E1E</color>
 </resources>

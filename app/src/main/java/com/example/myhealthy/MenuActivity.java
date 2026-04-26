@@ -141,6 +141,9 @@ public class MenuActivity extends AppCompatActivity {
         add("paha ayam");
         add("telur");
         add("ikan tuna");
+        add("ikan salmon");
+        add("dada kalkun");
+        add("greek yogurt");
     }};
 
     private final Set<String> NABATI_NAMES = new HashSet<String>() {{
@@ -148,6 +151,13 @@ public class MenuActivity extends AppCompatActivity {
         add("tempe");
         add("brokoli");
         add("oatmeal");
+        add("bayam");
+        add("kacang almond");
+        add("alpukat");
+        add("quinoa");
+        add("ubi jalar");
+        add("edamame");
+        add("tomat");
     }};
 
     private boolean isHewani(FoodItem f) {
@@ -172,7 +182,7 @@ public class MenuActivity extends AppCompatActivity {
                 "• Berat bersih: 100 g\n" +
                         "• Rekomendasi penyajian: Direbus, Dikukus, Dipanggang\n" +
                         "• Penyimpanan: Simpan di tempat sejuk & kering",
-                5.0f
+                4.9f
         ));
 
         allFoods.add(new FoodItem(
@@ -183,7 +193,7 @@ public class MenuActivity extends AppCompatActivity {
                 "• Berat bersih contoh saji: 100 g\n" +
                         "• Rekomendasi penyajian: Dikukus, ditumis sedikit minyak, dipanggang\n" +
                         "• Penyimpanan: Simpan di kulkas dalam wadah tertutup; habiskan 2–3 hari setelah dibuka",
-                5.0f
+                4.5f
         ));
 
         allFoods.add(new FoodItem(
@@ -194,7 +204,7 @@ public class MenuActivity extends AppCompatActivity {
                 "• Berat bersih contoh saji: 100 g\n" +
                         "• Rekomendasi penyajian: Dikukus, ditumis ringan, dipanggang/air fryer\n" +
                         "• Penyimpanan: Simpan dingin; dapat dibekukan untuk umur simpan lebih lama",
-                5.0f
+                4.8f
         ));
 
         allFoods.add(new FoodItem(
@@ -205,7 +215,7 @@ public class MenuActivity extends AppCompatActivity {
                 "• Berat bersih contoh saji: 100 g (~2 butir telur ukuran sedang, tanpa cangkang)\n" +
                         "• Rekomendasi penyajian: Direbus, orak-arik tanpa banyak minyak, telur dadar tipis\n" +
                         "• Penyimpanan: Simpan telur mentah di kulkas; telur rebus utuh tahan 3–4 hari dalam kulkas",
-                5.0f
+                4.7f
         ));
 
         allFoods.add(new FoodItem(
@@ -216,7 +226,7 @@ public class MenuActivity extends AppCompatActivity {
                 "• Berat bersih contoh saji: 100 g daging matang, tanpa kulit/tulang\n" +
                         "• Rekomendasi penyajian: Direbus, dikukus, dipanggang/air fryer\n" +
                         "• Penyimpanan: Simpan daging mentah di kulkas (≤2 hari) atau beku; masakan matang tahan 3–4 hari di kulkas",
-                5.0f
+                4.2f
         ));
 
         allFoods.add(new FoodItem(
@@ -238,7 +248,7 @@ public class MenuActivity extends AppCompatActivity {
                 "• Berat bersih contoh saji: 100 g\n" +
                         "• Rekomendasi: Kukus/tumis ringan\n" +
                         "• Penyimpanan: Simpan di kulkas 3–5 hari",
-                4.6f
+                5.0f
         ));
 
         allFoods.add(new FoodItem(
@@ -249,7 +259,117 @@ public class MenuActivity extends AppCompatActivity {
                 "• Berat bersih contoh saji: 40 g (kering)\n" +
                         "• Rekomendasi: Seduh air panas/susu rendah lemak\n" +
                         "• Penyimpanan: Simpan kering & tertutup rapat",
+                4.6f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Bayam",
+                "Sayuran hijau padat nutrisi yang kaya akan zat besi, kalsium, dan vitamin K. Sangat baik untuk kesehatan tulang dan sirkulasi darah.",
+                R.drawable.bayam,
+                3, 23, 0, 4,
+                "• Berat bersih contoh saji: 100 g\n" +
+                        "• Rekomendasi penyajian: Dikukus, direbus sebentar, tumis ringan\n" +
+                        "• Penyimpanan: Simpan di kulkas dalam wadah tertutup",
+                5.0f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Ikan Salmon",
+                "Ikan berlemak yang kaya akan asam lemak omega-3 kualitas tinggi, sangat baik untuk kesehatan otak dan jantung.",
+                R.drawable.salmon,
+                20, 208, 13, 0,
+                "• Berat bersih contoh saji: 100 g\n" +
+                        "• Rekomendasi penyajian: Dipanggang, dikukus, pan-sear\n" +
+                        "• Penyimpanan: Simpan di kulkas/freezer",
+                4.9f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Kacang Almond",
+                "Kacang tinggi lemak sehat, vitamin E, dan serat. Sangat mengenyangkan dan cocok untuk camilan sehat dalam porsi terkontrol.",
+                R.drawable.almond,
+                21, 579, 50, 22,
+                "• Berat bersih contoh saji: 30 g (1 genggam kecil)\n" +
+                        "• Rekomendasi penyajian: Dimakan langsung, dipanggang\n" +
+                        "• Penyimpanan: Simpan di suhu ruang tertutup rapat",
                 4.7f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Alpukat",
+                "Buah unik tinggi lemak tak jenuh ganda yang menyehatkan jantung. Membantu penyerapan vitamin dari sayuran lain.",
+                R.drawable.alpukat,
+                2, 160, 15, 9,
+                "• Berat bersih contoh saji: 100 g\n" +
+                        "• Rekomendasi penyajian: Dimakan langsung, campuran salad\n" +
+                        "• Penyimpanan: Suhu ruang hingga matang, lalu kulkas",
+                4.8f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Dada Kalkun",
+                "Alternatif unggas selain ayam, dengan protein sangat tinggi dan nyaris tanpa lemak. Ideal untuk pembentukan massa otot.",
+                R.drawable.kalkun,
+                30, 135, 1, 0,
+                "• Berat bersih contoh saji: 100 g\n" +
+                        "• Rekomendasi penyajian: Dipanggang, direbus\n" +
+                        "• Penyimpanan: Simpan di kulkas/freezer",
+                4.9f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Quinoa",
+                "Biji-bijian utuh bebas gluten yang unik karena mengandung semua asam amino esensial. Pengganti nasi putih yang luar biasa.",
+                R.drawable.quinoa,
+                4, 120, 2, 21,
+                "• Berat bersih contoh saji: 100 g (matang)\n" +
+                        "• Rekomendasi penyajian: Direbus seperti nasi\n" +
+                        "• Penyimpanan: Simpan di kulkas (matang)",
+                4.8f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Ubi Jalar",
+                "Sumber karbohidrat kompleks dengan indeks glikemik rendah. Sangat tinggi vitamin A dan serat, lambat dicerna sehingga awet kenyang.",
+                R.drawable.ubi_jalar,
+                2, 86, 0, 20,
+                "• Berat bersih contoh saji: 100 g\n" +
+                        "• Rekomendasi penyajian: Dikukus, dipanggang utuh\n" +
+                        "• Penyimpanan: Tempat sejuk dan kering",
+                4.8f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Greek Yogurt",
+                "Produk susu fermentasi yang disaring sehingga proteinnya tinggi. Mengandung probiotik alami untuk kesehatan pencernaan.",
+                R.drawable.greek_yogurt,
+                10, 59, 0, 3,
+                "• Berat bersih contoh saji: 100 g\n" +
+                        "• Rekomendasi penyajian: Dikonsumsi langsung, dicampur buah\n" +
+                        "• Penyimpanan: Simpan di kulkas",
+                4.8f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Edamame",
+                "Kedelai muda utuh yang kaya protein nabati dan serat tinggi. Sangat populer sebagai camilan sehat penunda lapar.",
+                R.drawable.edamame,
+                11, 121, 5, 11,
+                "• Berat bersih contoh saji: 100 g\n" +
+                        "• Rekomendasi penyajian: Direbus sebentar dengan sedikit garam laut\n" +
+                        "• Penyimpanan: Simpan di kulkas/freezer",
+                4.8f
+        ));
+
+        allFoods.add(new FoodItem(
+                "Tomat",
+                "Buah/sayur berkalori sangat rendah, kaya akan likopen (antioksidan pelindung sel) dan vitamin C.",
+                R.drawable.tomat,
+                1, 18, 0, 4,
+                "• Berat bersih contoh saji: 100 g\n" +
+                        "• Rekomendasi penyajian: Dimakan langsung, salad, dimasak\n" +
+                        "• Penyimpanan: Suhu ruang (sebelum dipotong)",
+                4.9f
         ));
     }
 }

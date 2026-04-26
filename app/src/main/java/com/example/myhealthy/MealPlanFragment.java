@@ -94,14 +94,14 @@ public class MealPlanFragment extends Fragment {
             TextView tvName = new TextView(requireContext());
             tvName.setText(item.name);
             tvName.setTextSize(14);
-            tvName.setTextColor(0xFF222222);
+            tvName.setTextColor(0xFFFFFFFF);
             tvName.setTypeface(null, android.graphics.Typeface.BOLD);
             left.addView(tvName);
 
             TextView tvPortion = new TextView(requireContext());
             tvPortion.setText(item.portion);
             tvPortion.setTextSize(12);
-            tvPortion.setTextColor(0xFF999999);
+            tvPortion.setTextColor(0xFFA9B5AC);
             left.addView(tvPortion);
 
             card.addView(left);
@@ -110,7 +110,7 @@ public class MealPlanFragment extends Fragment {
             TextView tvCal = new TextView(requireContext());
             tvCal.setText(item.calories + " kkal");
             tvCal.setTextSize(14);
-            tvCal.setTextColor(0xFF008B02);
+            tvCal.setTextColor(0xFF00FF85);
             tvCal.setTypeface(null, android.graphics.Typeface.BOLD);
             card.addView(tvCal);
 

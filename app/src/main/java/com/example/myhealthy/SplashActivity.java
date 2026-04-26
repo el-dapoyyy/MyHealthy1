@@ -57,6 +57,18 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // If the app is already running and this activity is being re-created
+        // from the launcher (e.g. user taps app icon while it's in background),
+        // skip the splash and let the existing task resume.
+        if (!isTaskRoot()
+                && getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)
+                && getIntent().getAction() != null
+                && getIntent().getAction().equals(Intent.ACTION_MAIN)) {
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_splash);
 
         greetingText = findViewById(R.id.greeting_text);

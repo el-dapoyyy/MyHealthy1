@@ -18,7 +18,8 @@ public class CircularProgressView extends View {
     private int maxProgress = 100;
     private String label = "";
     private String unit = "";
-    private int progressColor = 0xFF008B02;
+    private int progressColor = 0xFF00FF85;
+    private boolean hideText = false;
 
     public CircularProgressView(Context context) {
         super(context);
@@ -40,7 +41,7 @@ public class CircularProgressView extends View {
         bgPaint.setStyle(Paint.Style.STROKE);
         bgPaint.setStrokeWidth(dp(8));
         bgPaint.setStrokeCap(Paint.Cap.ROUND);
-        bgPaint.setColor(0xFFE0E0E0);
+        bgPaint.setColor(0xFF0B3A1C);
 
         progressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         progressPaint.setStyle(Paint.Style.STROKE);
@@ -50,13 +51,13 @@ public class CircularProgressView extends View {
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setColor(0xFF222222);
+        textPaint.setColor(0xFFFFFFFF);
         textPaint.setTextSize(dp(18));
         textPaint.setFakeBoldText(true);
 
         labelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         labelPaint.setTextAlign(Paint.Align.CENTER);
-        labelPaint.setColor(0xFF999999);
+        labelPaint.setColor(0xFFA9B5AC);
         labelPaint.setTextSize(dp(10));
 
         arcRect = new RectF();
@@ -84,6 +85,11 @@ public class CircularProgressView extends View {
         invalidate();
     }
 
+    public void setHideText(boolean hide) {
+        this.hideText = hide;
+        invalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -104,19 +110,21 @@ public class CircularProgressView extends View {
         canvas.drawArc(arcRect, -90, sweep, false, progressPaint);
 
         // Center text (value)
-        String valueText = String.valueOf(progress);
-        canvas.drawText(valueText, cx, cy + dp(4), textPaint);
+        if (!hideText) {
+            String valueText = String.valueOf(progress);
+            canvas.drawText(valueText, cx, cy + dp(4), textPaint);
 
-        // Label below
-        if (!label.isEmpty()) {
-            canvas.drawText(label, cx, cy + dp(18), labelPaint);
-        }
+            // Label below
+            if (!label.isEmpty()) {
+                canvas.drawText(label, cx, cy + dp(18), labelPaint);
+            }
 
-        // Unit above
-        if (!unit.isEmpty()) {
-            Paint unitPaint = new Paint(labelPaint);
-            unitPaint.setTextSize(dp(9));
-            canvas.drawText(unit, cx, cy - dp(14), unitPaint);
+            // Unit above
+            if (!unit.isEmpty()) {
+                Paint unitPaint = new Paint(labelPaint);
+                unitPaint.setTextSize(dp(9));
+                canvas.drawText(unit, cx, cy - dp(14), unitPaint);
+            }
         }
     }
 

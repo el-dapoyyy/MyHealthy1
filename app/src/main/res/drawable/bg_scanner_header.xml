@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Dark background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#0A1A10" />
+        </shape>
+    </item>
+    <!-- Bottom neon glow line -->
+    <item android:gravity="bottom" android:height="2dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#00FF85"
+                android:centerColor="#00CC6A"
+                android:endColor="#00FF85"
+                android:angle="0" />
+        </shape>
+    </item>
+    <!-- Bottom glow spread -->
+    <item android:gravity="bottom" android:height="8dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#00001204"
+                android:endColor="#3300FF85"
+                android:angle="90" />
+        </shape>
+    </item>
+</layer-list>

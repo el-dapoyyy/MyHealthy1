@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Recalculate button: neon green with glow layers -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer glow (diffuse) -->
+    <item android:top="-4dp" android:bottom="-6dp" android:left="-4dp" android:right="-4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#1500FF85" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <!-- Mid glow -->
+    <item android:top="-2dp" android:bottom="-3dp" android:left="-2dp" android:right="-2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#2A00FF85" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+    <!-- Core solid button -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#00FF85" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+</layer-list>

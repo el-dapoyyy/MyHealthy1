@@ -75,21 +75,21 @@ public class HomeFragment extends Fragment {
         selectedTag = tag;
 
         tagAll.setBackgroundResource(R.drawable.bg_tag_unselected_gray);
-        tagAll.setTextColor(requireContext().getResources().getColor(android.R.color.white));
+        tagAll.setTextColor(requireContext().getResources().getColor(R.color.text_secondary));
         tagHewani.setBackgroundResource(R.drawable.bg_tag_unselected_gray);
-        tagHewani.setTextColor(requireContext().getResources().getColor(android.R.color.white));
+        tagHewani.setTextColor(requireContext().getResources().getColor(R.color.text_secondary));
         tagNabati.setBackgroundResource(R.drawable.bg_tag_unselected_gray);
-        tagNabati.setTextColor(requireContext().getResources().getColor(android.R.color.white));
+        tagNabati.setTextColor(requireContext().getResources().getColor(R.color.text_secondary));
 
         if (tag == TagType.ALL) {
             tagAll.setBackgroundResource(R.drawable.bg_tag_selected_green);
-            tagAll.setTextColor(requireContext().getResources().getColor(android.R.color.white));
+            tagAll.setTextColor(requireContext().getResources().getColor(R.color.bg_main));
         } else if (tag == TagType.HEWANI) {
             tagHewani.setBackgroundResource(R.drawable.bg_tag_selected_green);
-            tagHewani.setTextColor(requireContext().getResources().getColor(android.R.color.white));
+            tagHewani.setTextColor(requireContext().getResources().getColor(R.color.bg_main));
         } else {
             tagNabati.setBackgroundResource(R.drawable.bg_tag_selected_green);
-            tagNabati.setTextColor(requireContext().getResources().getColor(android.R.color.white));
+            tagNabati.setTextColor(requireContext().getResources().getColor(R.color.bg_main));
         }
 
         applyFilters();
@@ -116,10 +116,13 @@ public class HomeFragment extends Fragment {
 
     private final Set<String> HEWANI_NAMES = new HashSet<String>() {{
         add("dada ayam"); add("paha ayam"); add("telur"); add("ikan tuna");
+        add("ikan salmon"); add("dada kalkun"); add("greek yogurt");
     }};
 
     private final Set<String> NABATI_NAMES = new HashSet<String>() {{
         add("tahu"); add("tempe"); add("brokoli"); add("oatmeal");
+        add("bayam"); add("kacang almond"); add("alpukat"); add("quinoa");
+        add("ubi jalar"); add("edamame"); add("tomat");
     }};
 
     private boolean isHewani(FoodItem f) {
@@ -141,7 +144,7 @@ public class HomeFragment extends Fragment {
                 R.drawable.dada_ayam,
                 31, 165, 3, 0,
                 "• Berat bersih: 100 g\n• Rekomendasi penyajian: Direbus, Dikukus, Dipanggang\n• Penyimpanan: Simpan di tempat sejuk & kering",
-                5.0f
+                4.9f
         ));
 
         allFoods.add(new FoodItem(
@@ -150,7 +153,7 @@ public class HomeFragment extends Fragment {
                 R.drawable.placeholder_food_image,
                 8, 76, 5, 2,
                 "• Berat bersih contoh saji: 100 g\n• Rekomendasi penyajian: Dikukus, ditumis sedikit minyak, dipanggang\n• Penyimpanan: Simpan di kulkas dalam wadah tertutup; habiskan 2–3 hari setelah dibuka",
-                5.0f
+                4.5f
         ));
 
         allFoods.add(new FoodItem(
@@ -159,7 +162,7 @@ public class HomeFragment extends Fragment {
                 R.drawable.tempe,
                 20, 193, 11, 8,
                 "• Berat bersih contoh saji: 100 g\n• Rekomendasi penyajian: Dikukus, ditumis ringan, dipanggang/air fryer\n• Penyimpanan: Simpan dingin; dapat dibekukan untuk umur simpan lebih lama",
-                5.0f
+                4.8f
         ));
 
         allFoods.add(new FoodItem(
@@ -168,7 +171,7 @@ public class HomeFragment extends Fragment {
                 R.drawable.telur,
                 13, 155, 11, 1,
                 "• Berat bersih contoh saji: 100 g (~2 butir telur ukuran sedang, tanpa cangkang)\n• Rekomendasi penyajian: Direbus, orak-arik tanpa banyak minyak, telur dadar tipis\n• Penyimpanan: Simpan telur mentah di kulkas; telur rebus utuh tahan 3–4 hari dalam kulkas",
-                5.0f
+                4.7f
         ));
 
         allFoods.add(new FoodItem(
@@ -177,7 +180,7 @@ public class HomeFragment extends Fragment {
                 R.drawable.paha_ayam,
                 26, 209, 11, 0,
                 "• Berat bersih contoh saji: 100 g daging matang, tanpa kulit/tulang\n• Rekomendasi penyajian: Direbus, dikukus, dipanggang/air fryer\n• Penyimpanan: Simpan daging mentah di kulkas (≤2 hari) atau beku; masakan matang tahan 3–4 hari di kulkas",
-                5.0f
+                4.2f
         ));
 
         allFoods.add(new FoodItem(
@@ -195,7 +198,7 @@ public class HomeFragment extends Fragment {
                 R.drawable.brokoli,
                 3, 34, 0, 7,
                 "• Berat bersih contoh saji: 100 g\n• Rekomendasi: Kukus/tumis ringan\n• Penyimpanan: Simpan di kulkas 3–5 hari",
-                4.6f
+                5.0f
         ));
 
         allFoods.add(new FoodItem(
@@ -204,7 +207,7 @@ public class HomeFragment extends Fragment {
                 R.drawable.oatmeal,
                 13, 379, 7, 67,
                 "• Berat bersih contoh saji: 40 g (kering)\n• Rekomendasi: Seduh air panas/susu rendah lemak\n• Penyimpanan: Simpan kering & tertutup rapat",
-                4.7f
+                4.6f
         ));
     }
 }

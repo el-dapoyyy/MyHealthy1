@@ -1,163 +1,394 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_main">
+    android:background="@color/bg_main"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <!-- Header -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:padding="16dp">
-
-        <!-- BACK -->
         <TextView
             android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="&lt; Back"
-            android:textColor="@color/healthy_green"
-            android:textSize="14sp"
-            android:fontFamily="@font/exo2_extrabold"
-            android:paddingBottom="5dp"/>
+            android:text="←"
+            android:textColor="@color/neon_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:padding="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="FUEL LAB"
+            android:textColor="@color/neon_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/exo2_extrabold"/>
+    </RelativeLayout>
 
-        <!-- HEADER CARD -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_green_rounded"
-            android:orientation="horizontal"
-            android:padding="12dp">
-
-            <ImageView
-                android:id="@+id/foodImage"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:src="@drawable/default_image"
-                android:scaleType="centerCrop"/>
-
-            <TextView
-                android:id="@+id/foodName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="Food Name"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:fontFamily="@font/exo2_extrabold"
-                android:textStyle="bold"/>
-        </LinearLayout>
-
-        <!-- DESKRIPSI -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_green_rounded"
             android:orientation="vertical"
-            android:padding="12dp"
-            android:layout_marginTop="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="32dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Deskripsi Produk"
-                android:textColor="@color/white"
-                android:fontFamily="@font/exo2_extrabold"
-                android:textStyle="bold"/>
+            <!-- Image Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@android:color/white">
+                
+                <ImageView
+                    android:id="@+id/foodImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"/>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bg_food_image_gradient"/>
+
+                <TextView
+                    android:id="@+id/foodName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="16dp"
+                    android:text="Food Name"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/exo2_extrabold"
+                    android:textStyle="bold"/>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Description -->
             <TextView
                 android:id="@+id/foodDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_marginTop="6dp"/>
-        </LinearLayout>
+                android:layout_marginTop="16dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:lineSpacingExtra="4dp"/>
 
-        <!-- NUTRITION -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nutrition in 100g:"
-            android:textColor="@color/text_secondary"
-            android:fontFamily="@font/exo2_extrabold"
-            android:layout_marginTop="16dp"/>
+            <!-- Nutrition Info -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nutrition Info"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/exo2_extrabold"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="(per 100g)"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/prot"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:background="@drawable/bg_gray_rounded"
-                android:gravity="center"
-                android:text="PROT\n0g"
-                android:textColor="@color/white"
-                android:fontFamily="@font/exo2_extrabold"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="12dp">
+                
+                <!-- Row 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_nutrition_card"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/prot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/neon_primary"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/exo2_extrabold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PROTEIN"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="9sp"
+                            android:letterSpacing="0.1"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
 
-            <TextView
-                android:id="@+id/cal"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_gray_rounded"
-                android:gravity="center"
-                android:text="CAL\n0"
-                android:textColor="@color/white"
-                android:fontFamily="@font/exo2_extrabold"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_nutrition_card"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/cal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/exo2_extrabold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="KCAL"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="9sp"
+                            android:letterSpacing="0.1"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/fat"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_gray_rounded"
-                android:gravity="center"
-                android:text="FAT\n0g"
-                android:textColor="@color/white"
-                android:fontFamily="@font/exo2_extrabold"/>
+                <!-- Row 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp">
+                    
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_nutrition_card"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/fat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/exo2_extrabold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="FAT"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="9sp"
+                            android:letterSpacing="0.1"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
 
-            <TextView
-                android:id="@+id/carb"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_gray_rounded"
-                android:gravity="center"
-                android:text="CARBS\n0g"
-                android:textColor="@color/white"
-                android:fontFamily="@font/exo2_extrabold"/>
-        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_nutrition_card"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/carb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/exo2_extrabold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CARBS"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="9sp"
+                            android:letterSpacing="0.1"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
 
-        <!-- INFO -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_green_rounded"
-            android:orientation="vertical"
-            android:padding="12dp"
-            android:layout_marginTop="16dp">
-
+            <!-- Details -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Informasi Tambahan"
-                android:textColor="@color/white"
+                android:text="Details"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:fontFamily="@font/exo2_extrabold"
-                android:textStyle="bold"/>
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"/>
 
-            <TextView
-                android:id="@+id/additionalInfo"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_marginTop="6dp"/>
-        </LinearLayout>
+                android:background="@drawable/bg_details_card"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-    </LinearLayout>
-</ScrollView>
+                <!-- Detail 1 (additionalInfo) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_circle"
+                        android:gravity="center"
+                        android:text="⚖️"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="16dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="BERAT BERSIH / PORSI"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="9sp"
+                            android:letterSpacing="0.05"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/additionalInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="2dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#1A2D1A"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Detail 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_circle"
+                        android:gravity="center"
+                        android:text="🍲"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="16dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="REKOMENDASI PENYAJIAN"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="9sp"
+                            android:letterSpacing="0.05"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Direbus, Dikukus, Dipanggang"
+                            android:textColor="@android:color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="2dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#1A2D1A"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Detail 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_icon_circle"
+                        android:gravity="center"
+                        android:text="❄️"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="16dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PENYIMPANAN"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="9sp"
+                            android:letterSpacing="0.05"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Simpan di tempat sejuk &amp; kering"
+                            android:textColor="@android:color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="2dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Calculator section card: dark subtle border -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Faint outer border glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="4dp" android:color="#0D00FF85" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <!-- Core card -->
+    <item android:top="3dp" android:bottom="3dp" android:left="3dp" android:right="3dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#071A0F" />
+            <stroke android:width="1dp" android:color="#0B3A1C" />
+            <corners android:radius="13dp" />
+        </shape>
+    </item>
+</layer-list>

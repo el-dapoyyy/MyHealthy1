@@ -2,9 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#008B02">
+    android:background="@color/bg_main"
+    android:fitsSystemWindows="true">
 
-    <!-- Green Top Section with Logo -->
+    <!-- Logo Section with Neon Glow -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,28 +14,49 @@
         android:paddingTop="50dp"
         android:paddingBottom="60dp">
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/logo_sayur"
-            android:contentDescription="Logo" />
+        <!-- Logo with glow ring -->
+        <FrameLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_logo_glow_circle" />
+
+            <ImageView
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_sayur"
+                android:contentDescription="Logo" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Welcome to HEALTHYBITE"
             android:textSize="18sp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/neon_primary"
             android:textStyle="bold"
             android:fontFamily="@font/exo2_extrabold"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Smart Health Companion"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary"
+            android:fontFamily="@font/exo2_extrabold"
+            android:layout_marginTop="4dp" />
     </LinearLayout>
 
-    <!-- White Bottom Section (curved top) -->
+    <!-- Form Card with Neon Glow Border -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="210dp"
         android:fillViewport="true"
         android:clipToPadding="false">
 
@@ -42,167 +64,178 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/bg_white_top_rounded"
-            android:paddingTop="28dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="0dp"
             android:paddingBottom="32dp"
-            android:paddingStart="32dp"
-            android:paddingEnd="32dp"
             android:gravity="center_horizontal">
 
-            <!-- Title "Log in" -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Glowing Form Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Log in"
-                android:textSize="28sp"
-                android:textColor="#008B02"
-                android:textStyle="bold"
-                android:fontFamily="@font/exo2_extrabold"
-                android:layout_marginBottom="28dp" />
+                android:orientation="vertical"
+                android:background="@drawable/bg_login_glow_card"
+                android:paddingTop="28dp"
+                android:paddingBottom="28dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:gravity="center_horizontal">
 
-            <!-- Email Input -->
-            <EditText
-                android:id="@+id/login_email"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:maxLength="50"
-                android:singleLine="true"
-                android:textSize="14sp"
-                android:textColor="@color/text_primary"
-                android:fontFamily="@font/exo2_extrabold"
-                android:background="@drawable/bg_input_gray"
-                android:textColorHint="@color/text_secondary"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_marginBottom="10dp" />
+                <!-- Title "Log in" -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log in"
+                    android:textSize="28sp"
+                    android:textColor="@color/neon_primary"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/exo2_extrabold"
+                    android:layout_marginBottom="24dp" />
 
-            <!-- Password Input with Toggle -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="20dp">
-
+                <!-- Email Input with Glow -->
                 <EditText
-                    android:id="@+id/login_password"
+                    android:id="@+id/login_email"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:maxLength="30"
+                    android:layout_height="50dp"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="50"
                     android:singleLine="true"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary"
                     android:fontFamily="@font/exo2_extrabold"
-                    android:background="@drawable/bg_input_gray"
+                    android:background="@drawable/bg_input_neon_glow"
                     android:textColorHint="@color/text_secondary"
                     android:paddingStart="16dp"
-                    android:paddingEnd="48dp" />
+                    android:paddingEnd="16dp"
+                    android:layout_marginBottom="12dp" />
 
-                <ImageView
-                    android:id="@+id/btn_toggle_password"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginEnd="14dp"
-                    android:src="@drawable/ic_eye_off"
-                    android:contentDescription="Toggle password"
-                    android:clickable="true"
-                    android:focusable="true" />
-            </FrameLayout>
+                <!-- Password Input with Glow -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="24dp">
 
-            <!-- Login Button -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/login_button"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Log in"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/exo2_extrabold"
-                android:background="@drawable/bg_button_green"
-                android:stateListAnimator="@null"
-                android:layout_marginBottom="24dp" />
+                    <EditText
+                        android:id="@+id/login_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:maxLength="30"
+                        android:singleLine="true"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="@font/exo2_extrabold"
+                        android:background="@drawable/bg_input_neon_glow"
+                        android:textColorHint="@color/text_secondary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="48dp" />
 
-            <!-- "Atau login dengan" separator -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginBottom="18dp">
+                    <ImageView
+                        android:id="@+id/btn_toggle_password"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginEnd="14dp"
+                        android:src="@drawable/ic_eye_off"
+                        android:contentDescription="Toggle password"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </FrameLayout>
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="#E0E0E0" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="  Atau login dengan  "
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/exo2_extrabold" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="#E0E0E0" />
-            </LinearLayout>
-
-            <!-- Google Sign-In (Circle with G logo) -->
-            <LinearLayout
-                android:id="@+id/btn_google_sign_in"
-                android:layout_width="54dp"
-                android:layout_height="54dp"
-                android:gravity="center"
-                android:background="@drawable/bg_circle_border"
-                android:elevation="2dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_marginBottom="22dp">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@drawable/ic_google"
-                    android:contentDescription="Google" />
-            </LinearLayout>
-
-            <!-- "Belum punya akun? Register" -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Belum punya akun? "
-                    android:textColor="@color/text_primary"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/exo2_extrabold" />
-
-                <TextView
-                    android:id="@+id/tv_go_to_register"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Register"
-                    android:textColor="#008B02"
-                    android:textSize="13sp"
+                <!-- Login Button with Glow -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/login_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Log in"
+                    android:textColor="@color/text_inverse"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/exo2_extrabold"
-                    android:clickable="true"
-                    android:focusable="true" />
-            </LinearLayout>
+                    android:background="@drawable/bg_button_neon_glow"
+                    android:stateListAnimator="@null"
+                    android:layout_marginBottom="20dp" />
 
+                <!-- "Atau login dengan" separator -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="18dp">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/card_border" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  Atau login dengan  "
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/exo2_extrabold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/card_border" />
+                </LinearLayout>
+
+                <!-- Google Sign-In with Glow Ring -->
+                <LinearLayout
+                    android:id="@+id/btn_google_sign_in"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_google_circle_glow"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="22dp">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_google"
+                        android:contentDescription="Google" />
+                </LinearLayout>
+
+                <!-- "Belum punya akun? Register" -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Belum punya akun? "
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/exo2_extrabold" />
+
+                    <TextView
+                        android:id="@+id/tv_go_to_register"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Register"
+                        android:textColor="@color/neon_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/exo2_extrabold"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -123,19 +123,17 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         navigateToMenu();
                     } else {
-                        String errorMsg = "Email atau password salah!";
+                        String errorMsg = "Akun belum terdaftar, silahkan register dahulu";
                         if (task.getException() != null && task.getException().getMessage() != null) {
                             String msg = task.getException().getMessage();
-                            if (msg.contains("no user record")) {
-                                errorMsg = "Email belum terdaftar!";
+                            if (msg.contains("no user record") || msg.contains("user-not-found")) {
+                                errorMsg = "Akun belum terdaftar, silahkan register dahulu";
                             } else if (msg.contains("password is invalid") || msg.contains("INVALID_LOGIN_CREDENTIALS")) {
-                                errorMsg = "Password salah!";
+                                errorMsg = "Password salah atau Akun belum terdaftar, silahkan register dahulu";
                             } else if (msg.contains("badly formatted")) {
                                 errorMsg = "Format email tidak valid!";
                             } else if (msg.contains("network")) {
                                 errorMsg = "Tidak ada koneksi internet!";
-                            } else {
-                                errorMsg = "Login gagal, silakan coba lagi.";
                             }
                         }
                         Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();

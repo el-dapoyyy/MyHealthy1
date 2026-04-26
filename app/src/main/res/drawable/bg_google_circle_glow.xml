@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Google circle button with neon glow ring -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer faint glow ring -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="4dp" android:color="@color/neon_glow_10" />
+        </shape>
+    </item>
+    <!-- Inner glow ring -->
+    <item android:top="3dp" android:bottom="3dp" android:left="3dp" android:right="3dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/bg_main" />
+            <stroke android:width="1.5dp" android:color="@color/neon_glow_30" />
+        </shape>
+    </item>
+</layer-list>

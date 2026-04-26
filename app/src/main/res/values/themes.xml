@@ -1,18 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.MyHealthy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">#4CAF50</item>
-        <item name="colorPrimaryVariant">#388E3C</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimary">@color/healthy_green</item>
+        <item name="colorPrimaryVariant">@color/healthy_green_secondary</item>
+        <item name="colorOnPrimary">@color/text_inverse</item>
 
-        <item name="colorSecondary">#008B02</item>
-        <item name="colorSecondaryVariant">#006400</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSecondary">@color/healthy_tertiary</item>
+        <item name="colorSecondaryVariant">@color/healthy_green_secondary</item>
+        <item name="colorOnSecondary">@color/white</item>
 
-        <item name="android:statusBarColor">#0B0B0B</item>
+        <item name="android:statusBarColor">@color/bg_main</item>
 
         <item name="android:windowBackground">@color/bg_main</item>
         <item name="colorSurface">@color/bg_main</item>
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="android:textColor">@color/text_primary</item>
+
+        <!-- Global Font Injection -->
+        <item name="android:fontFamily">@font/lexend</item>
     </style>
 </resources>

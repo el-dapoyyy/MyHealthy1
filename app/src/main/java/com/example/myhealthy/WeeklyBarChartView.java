@@ -33,18 +33,18 @@ public class WeeklyBarChartView extends View {
 
     private void init() {
         barPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        barPaint.setColor(0xFF008B02);
+        barPaint.setColor(0xFF00FF85);
 
         barBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        barBgPaint.setColor(0xFFE8E8E8);
+        barBgPaint.setColor(0xFF0B3A1C);
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setColor(0xFF999999);
+        textPaint.setColor(0xFFA9B5AC);
         textPaint.setTextSize(dp(10));
         textPaint.setTextAlign(Paint.Align.CENTER);
 
         valuePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        valuePaint.setColor(0xFF333333);
+        valuePaint.setColor(0xFFFFFFFF);
         valuePaint.setTextSize(dp(8));
         valuePaint.setTextAlign(Paint.Align.CENTER);
         valuePaint.setFakeBoldText(true);

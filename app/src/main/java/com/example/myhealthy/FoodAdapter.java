@@ -39,7 +39,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
         holder.foodName.setText(foodItem.getName());
 
         float rating = foodItem.getRating();
-        holder.tvRating.setText(String.format(Locale.US, "⭐ %.1f/5.0", rating));
+        holder.tvRating.setText(String.format(Locale.US, "⭐ %.1f", rating));
 
         holder.foodImage.setImageResource(foodItem.getImageRes());
 

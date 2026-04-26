@@ -53,14 +53,22 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
     private static final int REQUEST_ACTIVITY_RECOGNITION = 200;
 
     // Views — Phase 1
-    private CircularProgressView progressSteps, progressCalories, progressWater;
-    private TextView tvStreak, tvLevel, tvXp, tvBmiInfo, tvCalorieTarget, tvSleepHours;
+    private CircularProgressView progressSteps;
+    private ProgressBar progressCalories, progressWater;
+    private TextView tvStreak, tvLevel, tvXp, tvSleepHoursDesc;
+    private TextView tvSteps, tvStepsTarget, tvCalories, tvWater;
+    private TextView tvBmiValue, tvBmiStatus;
+    private View bmiBarUnder, bmiBarHealthy, bmiBarOver, bmiBarObese;
+    private LinearLayout bmiBarContainer;
+    private TextView bmiNeedle;
     private ProgressBar xpProgressBar;
     private LinearLayout moodContainer;
+    private TextView tvUnlockedCount;
+    private TextView tvViewAllMeals;
+    private LinearLayout savedNutritionContainer;
 
     // Views — Phase 2
     private WeeklyBarChartView weeklyChart;
-    private WeightTrendView weightTrend;
 
     // Views — Phase 3
     private LinearLayout badgeContainer;
@@ -87,8 +95,8 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
     private List<String> earnedBadges = new ArrayList<>();
 
     // Mood options
-    private final String[] MOODS = {"😊", "😐", "😔", "😡", "😴"};
-    private final String[] MOOD_LABELS = {"Senang", "Biasa", "Sedih", "Marah", "Ngantuk"};
+    private final String[] MOODS = {"😫", "😔", "😐", "😊", "🤩"};
+    private final String[] MOOD_LABELS = {"Lelah", "Sedih", "Biasa", "Senang", "Bersemangat"};
     private final TextView[] moodButtons = new TextView[5];
 
     // Level system
@@ -127,24 +135,43 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
         tvXp = view.findViewById(R.id.tvXp);
         xpProgressBar = view.findViewById(R.id.xpProgressBar);
         moodContainer = view.findViewById(R.id.moodContainer);
-        tvBmiInfo = view.findViewById(R.id.tvBmiInfo);
-        tvCalorieTarget = view.findViewById(R.id.tvCalorieTarget);
-        tvSleepHours = view.findViewById(R.id.tvSleepHours);
+        tvBmiValue = view.findViewById(R.id.tvBmiValue);
+        tvBmiStatus = view.findViewById(R.id.tvBmiStatus);
+        bmiBarUnder = view.findViewById(R.id.bmiBarUnder);
+        bmiBarHealthy = view.findViewById(R.id.bmiBarHealthy);
+        bmiBarOver = view.findViewById(R.id.bmiBarOver);
+        bmiBarObese = view.findViewById(R.id.bmiBarObese);
+        bmiBarContainer = view.findViewById(R.id.bmiBarContainer);
+        bmiNeedle = view.findViewById(R.id.bmiNeedle);
+        tvSleepHoursDesc = view.findViewById(R.id.tvSleepHoursDesc);
+        tvSteps = view.findViewById(R.id.tvSteps);
+        tvStepsTarget = view.findViewById(R.id.tvStepsTarget);
+        tvCalories = view.findViewById(R.id.tvCalories);
+        tvWater = view.findViewById(R.id.tvWater);
+        tvUnlockedCount = view.findViewById(R.id.tvUnlockedCount);
+        tvViewAllMeals = view.findViewById(R.id.tvViewAllMeals);
+        savedNutritionContainer = view.findViewById(R.id.savedNutritionContainer);
+
+        // View All click listener
+        tvViewAllMeals.setOnClickListener(v -> openSavedMeals());
 
         // Bind Phase 2 views
         weeklyChart = view.findViewById(R.id.weeklyChart);
-        weightTrend = view.findViewById(R.id.weightTrend);
 
         // Bind Phase 3 views
         badgeContainer = view.findViewById(R.id.badgeContainer);
 
         // Setup circular progress labels
-        progressSteps.setLabel("Langkah");
-        progressSteps.setProgressColor(0xFF4CAF50);
-        progressCalories.setLabel("Kalori");
-        progressCalories.setProgressColor(0xFFFF9800);
-        progressWater.setLabel("Air");
-        progressWater.setProgressColor(0xFF2196F3);
+        progressSteps.setLabel("");
+        progressSteps.setUnit("");
+        progressSteps.setProgressColor(0xFF00FF85);
+        progressSteps.setHideText(true);
+        
+        // Initial setup for Body Composition Bars
+        bmiBarUnder.setAlpha(0.3f);
+        bmiBarHealthy.setAlpha(0.3f);
+        bmiBarOver.setAlpha(0.3f);
+        bmiBarObese.setAlpha(0.3f);
 
         // Setup mood buttons
         setupMoodButtons();
@@ -166,9 +193,12 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
         // Load calories eaten from diary
         loadCaloriesEaten();
 
+        // Load recent saved meals
+        loadRecentSavedMeals();
+
         // Phase 2: Load weekly chart data
         loadWeeklyCalories();
-        loadWeightTrend();
+        loadWeightTrendInBackground(); // Just checks for weight badge
 
         return view;
     }
@@ -182,14 +212,16 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
         for (int i = 0; i < MOODS.length; i++) {
             TextView tv = new TextView(requireContext());
             tv.setText(MOODS[i]);
-            tv.setTextSize(28);
+            tv.setTextSize(26);
             tv.setGravity(Gravity.CENTER);
-            tv.setPadding(dp(8), dp(6), dp(8), dp(6));
+            tv.setPadding(dp(2), dp(2), dp(2), dp(2));
             tv.setClickable(true);
             tv.setFocusable(true);
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                    dp(40), dp(40));
+            params.setMarginStart(dp(6));
+            params.setMarginEnd(dp(6));
             tv.setLayoutParams(params);
 
             final int idx = i;
@@ -203,11 +235,11 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
         selectedMood = MOODS[index];
         for (int i = 0; i < moodButtons.length; i++) {
             if (i == index) {
-                moodButtons[i].setBackgroundColor(0x30008B02);
-                moodButtons[i].setTextSize(34);
+                moodButtons[i].setBackgroundResource(R.drawable.bg_mood_selected);
+                moodButtons[i].setTextSize(28);
             } else {
                 moodButtons[i].setBackgroundColor(Color.TRANSPARENT);
-                moodButtons[i].setTextSize(28);
+                moodButtons[i].setTextSize(26);
             }
         }
         Map<String, Object> update = new HashMap<>();
@@ -247,8 +279,8 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
     }
 
     private void updateWaterUI() {
-        progressWater.setProgress(waterCount, WATER_TARGET);
-        progressWater.setUnit(waterCount + "/" + WATER_TARGET);
+        progressWater.setProgress(waterCount);
+        tvWater.setText(waterCount + "/8 gelas");
     }
 
     // ═══════════════════════════════════════════════════════
@@ -272,10 +304,15 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
                 Map<String, Object> update = new HashMap<>();
                 update.put("weight", weight);
                 todayRef.set(update, SetOptions.merge());
+                
+                // Update SharedPreferences specifically for calculator
+                SharedPreferences pref = requireContext().getSharedPreferences("myhealthy_calorie_calc", Context.MODE_PRIVATE);
+                pref.edit().putString("weight", String.valueOf(weight)).apply();
+                
                 addXp(15);
                 Toast.makeText(requireContext(), "Berat " + val + " kg disimpan! +15 XP", Toast.LENGTH_SHORT).show();
-                // Refresh weight trend
-                loadWeightTrend();
+                loadCalorieTarget(); // Re-calculate BMI
+                loadWeightTrendInBackground();
             }
         });
         builder.setNegativeButton("Batal", null);
@@ -303,7 +340,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
 
         builder.setPositiveButton("Simpan", (dialog, which) -> {
             sleepHours = picker.getValue();
-            tvSleepHours.setText((int) sleepHours + " jam");
+            tvSleepHoursDesc.setText((int) sleepHours + "j 0m tadi malam");
             Map<String, Object> update = new HashMap<>();
             update.put("sleepHours", sleepHours);
             todayRef.set(update, SetOptions.merge());
@@ -338,9 +375,8 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
         if (stepSensor != null) {
             sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI);
         } else {
-            progressSteps.setLabel("N/A");
-            progressSteps.setUnit("No sensor");
             progressSteps.setProgress(0, STEP_TARGET);
+            tvSteps.setText("0");
         }
     }
 
@@ -355,6 +391,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (!isAdded() || getContext() == null) return;
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
             int totalSteps = (int) event.values[0];
             if (initialSteps < 0) {
@@ -369,7 +406,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
             }
             currentSteps = totalSteps - initialSteps;
             progressSteps.setProgress(currentSteps, STEP_TARGET);
-            progressSteps.setUnit(currentSteps + "/" + STEP_TARGET);
+            tvSteps.setText(String.format(Locale.US, "%,d", currentSteps));
 
             // Check badge
             if (currentSteps >= STEP_TARGET) {
@@ -403,12 +440,46 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
                 double height = Double.parseDouble(heightStr);
                 double bmi = weight / Math.pow(height / 100.0, 2);
                 String cat;
-                if (bmi < 18.5) cat = "Kurus";
-                else if (bmi < 24.9) cat = "Normal";
-                else if (bmi < 29.9) cat = "Gemuk";
-                else cat = "Obesitas";
+                
+                bmiBarUnder.setAlpha(0.2f);
+                bmiBarHealthy.setAlpha(0.2f);
+                bmiBarOver.setAlpha(0.2f);
+                bmiBarObese.setAlpha(0.2f);
+                
+                if (bmi < 18.5) {
+                    cat = "UNDERWEIGHT";
+                    bmiBarUnder.setAlpha(1.0f);
+                } else if (bmi < 24.9) {
+                    cat = "NORMAL";
+                    bmiBarHealthy.setAlpha(1.0f);
+                } else if (bmi < 29.9) {
+                    cat = "OVERWEIGHT";
+                    bmiBarOver.setAlpha(1.0f);
+                } else {
+                    cat = "OBESE";
+                    bmiBarObese.setAlpha(1.0f);
+                }
 
-                tvBmiInfo.setText(String.format(Locale.US, "BMI: %.1f (%s) — Berat: %.0f kg", bmi, cat, weight));
+                // Needle positioning logic
+                bmiBarContainer.post(() -> {
+                    int containerWidth = bmiBarContainer.getWidth();
+                    double progress = 0;
+                    if (bmi <= 18.5) {
+                        progress = (bmi / 18.5) * (1.5 / 7.0);
+                    } else if (bmi <= 25.0) {
+                        progress = (1.5 / 7.0) + ((bmi - 18.5) / 6.5) * (1.5 / 7.0);
+                    } else if (bmi <= 30.0) {
+                        progress = (3.0 / 7.0) + ((bmi - 25.0) / 5.0) * (1.5 / 7.0);
+                    } else {
+                        progress = (4.5 / 7.0) + (Math.min(bmi - 30.0, 15) / 15.0) * (2.5 / 7.0);
+                    }
+                    float needleX = (float) (progress * containerWidth);
+                    // Center needle on the point
+                    bmiNeedle.setTranslationX(needleX - (bmiNeedle.getWidth() / 2f));
+                });
+
+                tvBmiValue.setText(String.format(Locale.US, "%.1f", bmi));
+                tvBmiStatus.setText(cat);
 
                 int genderPos = getIntPref(pref, "gender_pos", 0);
                 int age = getIntPref(pref, "age", 25);
@@ -422,9 +493,10 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
                 double actFactor = Double.parseDouble(actVals[Math.min(actPos, actVals.length - 1)]);
                 calorieTarget = (int) (bmr * actFactor);
 
-                tvCalorieTarget.setText("Target harian: " + calorieTarget + " kkal");
+                progressCalories.setMax(calorieTarget);
             } catch (Exception e) {
-                tvBmiInfo.setText("Data kalkulator belum lengkap.");
+                tvBmiValue.setText("-");
+                tvBmiStatus.setText("NO DATA");
             }
         }
     }
@@ -442,19 +514,106 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
                 .whereEqualTo("date", todayStr)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
+                    if (!isAdded() || getContext() == null) return;
                     caloriesEaten = 0;
                     for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                         Long cal = doc.getLong("calories");
                         if (cal != null) caloriesEaten += cal.intValue();
                     }
-                    progressCalories.setProgress(caloriesEaten, calorieTarget);
-                    progressCalories.setUnit(caloriesEaten + "/" + calorieTarget);
+                    progressCalories.setProgress(caloriesEaten);
+                    tvCalories.setText(String.format(Locale.US, "%,d", caloriesEaten));
                 });
+    }
+
+    private void loadRecentSavedMeals() {
+        db.collection("users").document(userId)
+                .collection("diary")
+                .whereEqualTo("date", todayStr)
+                .limit(3)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!isAdded() || getContext() == null) return;
+                    savedNutritionContainer.removeAllViews();
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String name = doc.getString("foodName");
+                        Long cal = doc.getLong("calories");
+                        
+                        if (name != null && cal != null) {
+                            addSavedMealCard(name, cal.intValue() + " KCAL", "🍽️");
+                        }
+                    }
+                    if (querySnapshot.isEmpty()) {
+                        TextView empty = new TextView(requireContext());
+                        empty.setText("Belum ada makanan tersimpan hari ini.");
+                        empty.setTextColor(0xFFA9B5AC);
+                        empty.setPadding(0, dp(16), 0, 0);
+                        savedNutritionContainer.addView(empty);
+                    }
+                });
+    }
+
+    private void addSavedMealCard(String title, String subtitle, String emoji) {
+        // Construct card programmatically
+        LinearLayout card = new LinearLayout(requireContext());
+        card.setOrientation(LinearLayout.HORIZONTAL);
+        card.setGravity(Gravity.CENTER_VERTICAL);
+        card.setBackgroundResource(R.drawable.bg_progress_card_dark);
+        card.setPadding(dp(16), dp(16), dp(16), dp(16));
+        
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.bottomMargin = dp(12);
+        card.setLayoutParams(params);
+
+        TextView tvEmoji = new TextView(requireContext());
+        tvEmoji.setLayoutParams(new LinearLayout.LayoutParams(dp(60), dp(60)));
+        tvEmoji.setBackgroundResource(R.drawable.bg_badge_icon);
+        tvEmoji.setGravity(Gravity.CENTER);
+        tvEmoji.setText(emoji);
+        tvEmoji.setTextSize(32);
+        
+        LinearLayout textCol = new LinearLayout(requireContext());
+        textCol.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        textParams.setMarginStart(dp(16));
+        textCol.setLayoutParams(textParams);
+
+        TextView tvTitle = new TextView(requireContext());
+        tvTitle.setText(title);
+        tvTitle.setTextColor(Color.WHITE);
+        tvTitle.setTextSize(14);
+        tvTitle.setTypeface(null, android.graphics.Typeface.BOLD);
+        
+        TextView tvSub = new TextView(requireContext());
+        tvSub.setText(subtitle);
+        tvSub.setTextColor(0xFFA9B5AC);
+        tvSub.setTextSize(11);
+        tvSub.setPadding(0, dp(2), 0, 0);
+        
+        textCol.addView(tvTitle);
+        textCol.addView(tvSub);
+        
+        card.addView(tvEmoji);
+        card.addView(textCol);
+        
+        savedNutritionContainer.addView(card);
+    }
+    
+    private void openSavedMeals() {
+        if (getActivity() instanceof MainNavActivity) {
+            MainNavActivity act = (MainNavActivity) getActivity();
+            act.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new FoodDiaryFragment(), "food_diary")
+                    .commitAllowingStateLoss();
+            com.google.android.material.bottomnavigation.BottomNavigationView bnv = act.findViewById(R.id.bottom_nav);
+            if (bnv != null) bnv.setSelectedItemId(R.id.nav_dummy);
+        }
     }
 
     @SuppressWarnings("unchecked")
     private void loadProgress() {
         todayRef.get().addOnSuccessListener(doc -> {
+            if (!isAdded() || getContext() == null) return;
             if (doc.exists()) {
                 // Water
                 Long w = doc.getLong("waterGlasses");
@@ -467,8 +626,8 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
                     selectedMood = mood;
                     for (int i = 0; i < MOODS.length; i++) {
                         if (MOODS[i].equals(mood)) {
-                            moodButtons[i].setBackgroundColor(0x30008B02);
-                            moodButtons[i].setTextSize(34);
+                            moodButtons[i].setBackgroundResource(R.drawable.bg_mood_selected);
+                            moodButtons[i].setTextSize(28);
                         }
                     }
                 }
@@ -477,7 +636,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
                 Double sl = doc.getDouble("sleepHours");
                 if (sl != null) {
                     sleepHours = sl;
-                    tvSleepHours.setText((int) sleepHours + " jam");
+                    tvSleepHoursDesc.setText((int) sleepHours + "j 0m tadi malam");
                 }
 
                 // Mood XP flag
@@ -524,6 +683,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
                 .collection("progress").document(yesterdayStr)
                 .get()
                 .addOnSuccessListener(yesterdayDoc -> {
+                    if (!isAdded() || getContext() == null) return;
                     if (yesterdayDoc.exists()) {
                         // Yesterday had activity → continue streak
                         Long yesterdayStreak = yesterdayDoc.getLong("streak");
@@ -551,7 +711,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
-        String[] dayLabels = {"Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"};
+        String[] dayLabels = {"S", "M", "T", "W", "T", "F", "S"};
         String[] dateKeys = new String[7];
 
         // Go to Sunday of current week
@@ -570,6 +730,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
                 .whereLessThanOrEqualTo("date", dateKeys[6])
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
+                    if (!isAdded() || getContext() == null) return;
                     // Sum calories per date
                     Map<String, Integer> dailyTotals = new HashMap<>();
                     for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
@@ -601,45 +762,26 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
     }
 
     // ═══════════════════════════════════════════════════════
-    // PHASE 2: WEIGHT TREND
+    // Background Check for Badges (Hidden from UI)
     // ═══════════════════════════════════════════════════════
 
-    private void loadWeightTrend() {
+    private void loadWeightTrendInBackground() {
         db.collection("users").document(userId)
                 .collection("progress")
                 .whereGreaterThan("weight", 0)
-                .orderBy("weight", Query.Direction.ASCENDING)
                 .limit(10)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
-                    List<Float> weights = new ArrayList<>();
-                    List<String> labels = new ArrayList<>();
-
-                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        Double w = doc.getDouble("weight");
-                        if (w != null && w > 0) {
-                            weights.add(w.floatValue());
-                            String docId = doc.getId(); // yyyy-MM-dd
-                            // Show as dd/MM
-                            if (docId.length() >= 10) {
-                                labels.add(docId.substring(8, 10) + "/" + docId.substring(5, 7));
-                            } else {
-                                labels.add(docId);
-                            }
-                        }
-                    }
-
-                    weightTrend.setData(weights, labels);
-
+                    if (!isAdded() || getContext() == null) return;
                     // Badge: weight_consistent (3+ weight records)
-                    if (weights.size() >= 3) {
+                    if (querySnapshot.getDocuments().size() >= 3) {
                         awardBadge(BADGE_WEIGHT_3, "⚖️ Konsisten");
                     }
                 });
     }
 
     // ═══════════════════════════════════════════════════════
-    // PHASE 3: XP & GAMIFICATION
+    // GAMIFICATION logic
     // ═══════════════════════════════════════════════════════
 
     private void addXp(int amount) {
@@ -660,7 +802,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
         }
 
         String levelName = level <= LEVEL_NAMES.length ? LEVEL_NAMES[level - 1] : "Legend";
-        tvLevel.setText("⭐ Lv." + level + " " + levelName);
+        tvLevel.setText("Level Up!"); // As requested from screen
 
         int currentLevelXp = LEVEL_XP[Math.min(level - 1, LEVEL_XP.length - 1)];
         int nextLevelXp = level < LEVEL_XP.length ? LEVEL_XP[level] : LEVEL_XP[LEVEL_XP.length - 1] + 500;
@@ -669,7 +811,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
 
         xpProgressBar.setMax(xpNeeded);
         xpProgressBar.setProgress(Math.min(xpInLevel, xpNeeded));
-        tvXp.setText(totalXp + " / " + nextLevelXp + " XP");
+        tvXp.setText(totalXp + "/" + nextLevelXp + " XP");
     }
 
     private void updateStreakUI() {
@@ -681,6 +823,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
     // ═══════════════════════════════════════════════════════
 
     private void awardBadge(String badgeId, String displayName) {
+        if (!isAdded() || getContext() == null) return;
         if (earnedBadges.contains(badgeId)) return; // Already earned
 
         earnedBadges.add(badgeId);
@@ -697,17 +840,19 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
     }
 
     private void renderBadges() {
-        if (badgeContainer == null) return;
+        if (!isAdded() || getContext() == null || badgeContainer == null) return;
         badgeContainer.removeAllViews();
+
+        tvUnlockedCount.setText(earnedBadges.size() + "/6 UNLOCKED");
 
         // All possible badges
         String[][] allBadges = {
-                {BADGE_WATER, "🥇", "Pejuang Air Putih", "Minum 8 gelas dalam 1 hari"},
-                {BADGE_WALKER, "🏃", "Pejalan Kaki", "6.000 langkah dalam 1 hari"},
-                {BADGE_STREAK_3, "🔥", "3-Day Streak", "3 hari berturut-turut aktif"},
-                {BADGE_STREAK_7, "🔥", "7-Day Streak", "7 hari berturut-turut aktif"},
-                {BADGE_DIET_7, "🥗", "Diet Master", "Catat makanan 7 hari berturut"},
-                {BADGE_WEIGHT_3, "⚖️", "Konsisten", "Update berat badan 3x"},
+                {BADGE_WATER, "💧", "Hydration Hero", "Minum 8 gelas dalam 1 hari"},
+                {BADGE_WALKER, "🏃", "Daily Walker", "6.000 langkah dalam 1 hari"},
+                {BADGE_STREAK_3, "☀", "Early Bird", "Login 3 hari berturut-turut"},
+                {BADGE_STREAK_7, "🔥", "Streak 7", "Login 7 hari berturut-turut"},
+                {BADGE_DIET_7, "🥗", "Diet Master", "Catat makanan 7 hari"},
+                {BADGE_WEIGHT_3, "⭐", "Consistency King", "Log semua matrik untuk 14 hari"},
         };
 
         for (String[] badge : allBadges) {
@@ -728,19 +873,25 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
         LinearLayout row = new LinearLayout(requireContext());
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
-        row.setPadding(dp(8), dp(8), dp(8), dp(8));
+        row.setPadding(dp(8), dp(4), dp(8), dp(4));
         row.setAlpha(earned ? 1f : 0.4f);
 
         LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        rowParams.bottomMargin = dp(4);
+        rowParams.bottomMargin = dp(8);
         row.setLayoutParams(rowParams);
 
         // Emoji icon
         TextView tvEmoji = new TextView(requireContext());
         tvEmoji.setText(emoji);
         tvEmoji.setTextSize(24);
-        tvEmoji.setPadding(0, 0, dp(12), 0);
+        tvEmoji.setBackgroundResource(R.drawable.bg_badge_icon);
+        tvEmoji.setGravity(Gravity.CENTER);
+        
+        LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(dp(48), dp(48));
+        iconParams.setMarginEnd(dp(16));
+        tvEmoji.setLayoutParams(iconParams);
+        
         row.addView(tvEmoji);
 
         // Name + desc
@@ -751,14 +902,14 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
 
         TextView tvName = new TextView(requireContext());
         tvName.setText(name);
-        tvName.setTextColor(earned ? 0xFF222222 : 0xFF999999);
-        tvName.setTextSize(13);
+        tvName.setTextColor(earned ? 0xFFFFFFFF : 0xFFA9B5AC);
+        tvName.setTextSize(14);
         tvName.setTypeface(null, Typeface.BOLD);
         textCol.addView(tvName);
 
         TextView tvDesc = new TextView(requireContext());
         tvDesc.setText(desc);
-        tvDesc.setTextColor(0xFF999999);
+        tvDesc.setTextColor(0xFFA9B5AC);
         tvDesc.setTextSize(11);
         textCol.addView(tvDesc);
 
@@ -786,6 +937,7 @@ public class DailyProgressFragment extends Fragment implements SensorEventListen
     }
 
     private int dp(int value) {
+        if (!isAdded() || getContext() == null) return 0;
         return (int) (value * requireContext().getResources().getDisplayMetrics().density);
     }
 }
