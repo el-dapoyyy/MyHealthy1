@@ -239,7 +239,7 @@ public class AIScannerFragment extends Fragment {
 
         new Thread(() -> {
             try {
-                String urlStr = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=" + apiKey;
+                String urlStr = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=" + apiKey;
                 Log.d(TAG, "Calling Gemini API...");
 
                 // Image part
