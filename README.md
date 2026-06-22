@@ -157,8 +157,6 @@ Sistem login/register dengan Firebase Auth.
 
 ## 📱 Showcase UI
 
-> **Catatan**: Screenshot UI akan ditambahkan oleh developer. Silakan replace placeholder di bawah ini dengan screenshot asli dari aplikasi.
-
 ### Screenshots
 
 | Splash Screen | Login | Register |
