@@ -1,8 +1,10 @@
 # MyHealthy - Aplikasi Pelacak Gizi & Kesehatan
 
-![Logo MyHealthy](assets/logo.png)
+MyHealthy adalah aplikasi Android yang dirancang untuk membantu pengguna memantau dan meningkatkan gaya hidup sehat mereka melalui berbagai fitur komprehensif. Aplikasi ini menyediakan sistem pelacakan nutrisi harian, kalkulator kebutuhan kalori, analisis makanan berbasis AI, serta berbagai fitur gamifikasi untuk memotivasi pengguna dalam perjalanan sehat mereka.
 
-Aplikasi Android pelacak nutrisi dan gaya hidup sehat dengan fitur AI Scanner untuk analisis makanan berbasis Gemini, gamifikasi, dan dashboard kesehatan komprehensif.
+Dengan antarmuka yang modern menggunakan tema gelap yang nyaman di mata, MyHealthy memungkinkan pengguna untuk dengan mudah mencatat asupan makanan harian, melacak aktivitas fisik seperti jumlah langkah dan konsumsi air, serta memantau tidur dan suasana hati. Sistem gamifikasi yang terintegrasi memberikan pengalaman yang menyenangkan dengan fitur XP, level, dan badge yang bisa dibuka melalui berbagai aktivitas sehat.
+
+Fitur utama termasuk AI Food Scanner yang menggunakan Google Gemini Flash API untuk menganalisis foto makanan dan memberikan estimasi nilai gizi secara otomatis. Aplikasi ini juga menyediakan database makanan sehat yang lengkap dengan informasi nutrisi detail, kalkulator BMI dan kebutuhan kalori harian, serta rencana menu sehat untuk setiap waktu makan.
 
 ---
 
@@ -161,19 +163,15 @@ Sistem login/register dengan Firebase Auth.
 
 | Splash Screen | Login | Register |
 |:---:|:---:|:---:|
-| ![Splash](assets/screenshots/splash.png) | ![Login](assets/screenshots/login.png) | ![Register](assets/screenshots/register.png) |
+| ![Splash](assets/screenshots/splash.jpg) | ![Login](assets/screenshots/login.jpg) | ![Register](assets/screenshots/register.jpg) |
 
 | Home (Food Database) | Food Detail | AI Scanner |
 |:---:|:---:|:---:|
-| ![Home](assets/screenshots/home.png) | ![Detail](assets/screenshots/food_detail.png) | ![AI Scanner](assets/screenshots/ai_scanner.png) |
+| ![Home](assets/screenshots/home.jpg) | ![Detail](assets/screenshots/food_detail.jpg) | ![AI Scanner](assets/screenshots/ai_scanner.jpg) |
 
-| Food Diary | Calculator | Daily Progress |
-|:---:|:---:|:---:|
-| ![Diary](assets/screenshots/diary.png) | ![Calculator](assets/screenshots/calculator.png) | ![Progress](assets/screenshots/progress.png) |
-
-| Meal Plan | Profile | Bottom Navigation |
-|:---:|:---:|:---:|
-| ![Meal Plan](assets/screenshots/meal_plan.png) | ![Profile](assets/screenshots/profile.png) | ![Navigation](assets/screenshots/navigation.png) |
+| Food Diary | Calculator | Daily Progress | Profile |
+|:---:|:---:|:---:|:---:|
+| ![Diary](assets/screenshots/diary.jpg) | ![Calculator](assets/screenshots/calculator.jpg) | ![Progress](assets/screenshots/progress.jpg) | ![Profile](assets/screenshots/profile.jpg) |
 
 ---
 
@@ -337,11 +335,9 @@ service cloud.firestore {
 Project management menggunakan **ClickUp** untuk tracking sprint dan task.
 
 ### Link Project
-🔗 [MyHealthy SCRUM Board - ClickUp](https://sharing.clickup.com/90181792360/b/h/2kzm1wk8-378/7fe21bafd1ddec5)
+🔗 [MyHealthy SCRUM Board - ClickUp](https://sharing.clickup.com/90181792360/g/h/2kzm1wk8-538/e9ba19332353a43)
 
-### Project Structure
-
-#### Product Backlog
+### Product Backlog
 | ID | Task | Priority | Status |
 |----|------|----------|--------|
 | PB-001 | Setup Project Android Studio | High | Done |
@@ -356,54 +352,6 @@ Project management menggunakan **ClickUp** untuk tracking sprint dan task.
 | PB-010 | Meal Plan Feature | Low | Done |
 | PB-011 | Profile & Stats | Medium | Done |
 
-#### Sprint Breakdown
-
-**Sprint 1: Foundation**
-- Project Setup
-- Authentication (Login/Register)
-- Navigation Structure
-- Dark Theme UI
-
-**Sprint 2: Core Features**
-- Food Database with Search & Filter
-- Food Detail View
-- Calorie Calculator with BMI
-
-**Sprint 3: Diary & Tracking**
-- Food Diary CRUD
-- Daily Progress Dashboard
-- Step Counter Integration
-- Water & Sleep Tracking
-
-**Sprint 4: AI & Gamification**
-- AI Food Scanner (Gemini API)
-- Gamification System (XP, Levels, Badges)
-- Weekly Charts
-- Streak System
-
-**Sprint 5: Polish**
-- Profile Management
-- Meal Plan Feature
-- Bug Fixes
-- Performance Optimization
-
-### Task Management
-
-| Status | Warna | Keterangan |
-|--------|-------|------------|
-| 🟢 To Do | Abu-abu | Belum dimulai |
-| 🔵 In Progress | Biru | Sedang dikerjakan |
-| 🟡 In Review | Kuning | Menunggu review |
-| ✅ Done | Hijau | Selesai |
-| ⚠️ Blocked | Merah | Ada hambatan |
-
-### Team Roles
-| Role | Responsibility |
-|------|----------------|
-| Product Owner | Prioritas fitur & backlog |
-| Scrum Master | Sprint planning & tracking |
-| Developer | Implementasi fitur |
-
 ---
 
 ## 📄 Lisensi
@@ -416,7 +364,8 @@ Project ini dibuat untuk keperluan akademis. Semua library pihak ketiga mengikut
 
 ## 👤 Author
 
-**Nama**: Daffa El Poy
+**Nama**: Alfario Daffa Mustofa
+**NIM**: 312410359
 **GitHub**: [el-dapoyyy](https://github.com/el-dapoyyy)
 
 ---
